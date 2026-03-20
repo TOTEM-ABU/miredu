@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum RoleType {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+enum CourseType {
+  Math
+  English
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+}
+
+enum PaymentStatus {
+  PAID
+  UNPAID
+  PENDING
+}
+
+enum PaymentType {
+  CASH
+  CARD
+}
+
+model STUDENT {
+  id                 String    @id @default(uuid())
+  firstName          String
+  lastName           String
+  email              String    @unique
+  password           String
+  phoneNumber        String    @unique
+  parentsPhoneNumber String    @unique
+  balance            Int       @default(0)
+  role               RoleType  @default(STUDENT)
+  isVerified         Boolean   @default(false)
+  otpCode            String?
+  otpExpires         DateTime?
+  refreshToken       String?
+
+  groups      GROUP[]
+  attendances ATTENDANCE[]
+  payments    PAYMENT[]
+  sessions    SESSION[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TEACHER {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  password     String
+  phoneNumber  String   @unique
+  role         RoleType @default(TEACHER)
+  refreshToken String?
+
+  groups GROUP[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ADMIN {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  password     String
+  role         RoleType @default(ADMIN)
+  refreshToken String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SESSION {
+  id         String   @id @default(uuid())
+  ipAddress  String
+  deviceInfo String
+  token      String
+  expiresAt  DateTime
+
+  studentId String?
+  Student   STUDENT? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model GROUP {
+  id             String     @id @default(uuid())
+  name           String     @unique
+  courseType     CourseType
+  price          Int
+  students_count Int        @default(0)
+
+  students    STUDENT[]
+  attendances ATTENDANCE[]
+  teacher     TEACHER?     @relation(fields: [teacherId], references: [id])
+  teacherId   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ATTENDANCE {
+  id     Int              @id @default(autoincrement())
+  date   DateTime         @default(now())
+  status AttendanceStatus
+
+  group     GROUP   @relation(fields: [groupId], references: [id])
+  groupId   String
+  student   STUDENT @relation(fields: [studentId], references: [id])
+  studentId String
+
+  updatedAt DateTime @updatedAt
+
+  @@index([date, groupId, studentId])
+}
+
+model PAYMENT {
+  id          Int           @id @default(autoincrement())
+  amount      Int
+  date        DateTime      @default(now())
+  status      PaymentStatus @default(PENDING)
+  paymentType PaymentType
+
+  student   STUDENT @relation(fields: [studentId], references: [id])
+  studentId String
+
+  updatedAt DateTime @updatedAt
+}
