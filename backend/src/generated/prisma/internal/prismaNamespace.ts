@@ -1039,6 +1039,7 @@ export type SESSIONScalarFieldEnum = (typeof SESSIONScalarFieldEnum)[keyof typeo
 export const GROUPScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  description: 'description',
   courseType: 'courseType',
   price: 'price',
   students_count: 'students_count',

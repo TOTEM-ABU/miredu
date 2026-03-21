@@ -83,6 +83,12 @@ export class UserController {
     return this.UserService.deleteUser(id, role);
   }
 
+  @UseGuards(AuthGuard)
+  @Get('get-me')
+  getMe(@Req() req: Request) {
+    return this.UserService.getMe(req['user'].id, req['user'].role);
+  }
+
   @Roles(RoleType.ADMIN)
   @UseGuards(AuthGuard, RoleGuard)
   @Get('GetAllStudentsWithFilters')

@@ -111,8 +111,9 @@ model SESSION {
 model GROUP {
   id             String     @id @default(uuid())
   name           String     @unique
+  description    String?
   courseType     CourseType
-  price          Int
+  price          Int  
   students_count Int        @default(0)
 
   students    STUDENT[]

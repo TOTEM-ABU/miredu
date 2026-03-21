@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   ConflictException,
-  ForbiddenException,
   HttpException,
   Injectable,
   InternalServerErrorException,
@@ -663,6 +662,32 @@ export class UserService {
         throw new NotFoundException('User not found!');
       if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException('Failed to delete user!');
+    }
+  }
+
+  async getMe(id: string, role: string) {
+    try {
+      const modelMap = {
+        STUDENT: 'sTUDENT',
+        TEACHER: 'tEACHER',
+        ADMIN: 'aDMIN',
+      };
+
+      const prismaModel = modelMap[role];
+      if (!prismaModel) throw new BadRequestException('Invalid role!');
+
+      const user = await (this.prisma[prismaModel] as any).findUnique({
+        where: { id },
+      });
+
+      return user;
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException('User not found!');
+      }
+      if (error instanceof HttpException) throw error;
+
+      throw new InternalServerErrorException('Failed to get user!');
     }
   }
 }

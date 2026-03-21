@@ -39,6 +39,7 @@ export type GROUPSumAggregateOutputType = {
 export type GROUPMinAggregateOutputType = {
   id: string | null
   name: string | null
+  description: string | null
   courseType: $Enums.CourseType | null
   price: number | null
   students_count: number | null
@@ -50,6 +51,7 @@ export type GROUPMinAggregateOutputType = {
 export type GROUPMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  description: string | null
   courseType: $Enums.CourseType | null
   price: number | null
   students_count: number | null
@@ -61,6 +63,7 @@ export type GROUPMaxAggregateOutputType = {
 export type GROUPCountAggregateOutputType = {
   id: number
   name: number
+  description: number
   courseType: number
   price: number
   students_count: number
@@ -84,6 +87,7 @@ export type GROUPSumAggregateInputType = {
 export type GROUPMinAggregateInputType = {
   id?: true
   name?: true
+  description?: true
   courseType?: true
   price?: true
   students_count?: true
@@ -95,6 +99,7 @@ export type GROUPMinAggregateInputType = {
 export type GROUPMaxAggregateInputType = {
   id?: true
   name?: true
+  description?: true
   courseType?: true
   price?: true
   students_count?: true
@@ -106,6 +111,7 @@ export type GROUPMaxAggregateInputType = {
 export type GROUPCountAggregateInputType = {
   id?: true
   name?: true
+  description?: true
   courseType?: true
   price?: true
   students_count?: true
@@ -204,6 +210,7 @@ export type GROUPGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type GROUPGroupByOutputType = {
   id: string
   name: string
+  description: string | null
   courseType: $Enums.CourseType
   price: number
   students_count: number
@@ -238,6 +245,7 @@ export type GROUPWhereInput = {
   NOT?: Prisma.GROUPWhereInput | Prisma.GROUPWhereInput[]
   id?: Prisma.StringFilter<"GROUP"> | string
   name?: Prisma.StringFilter<"GROUP"> | string
+  description?: Prisma.StringNullableFilter<"GROUP"> | string | null
   courseType?: Prisma.EnumCourseTypeFilter<"GROUP"> | $Enums.CourseType
   price?: Prisma.IntFilter<"GROUP"> | number
   students_count?: Prisma.IntFilter<"GROUP"> | number
@@ -252,6 +260,7 @@ export type GROUPWhereInput = {
 export type GROUPOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   students_count?: Prisma.SortOrder
@@ -269,6 +278,7 @@ export type GROUPWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.GROUPWhereInput | Prisma.GROUPWhereInput[]
   OR?: Prisma.GROUPWhereInput[]
   NOT?: Prisma.GROUPWhereInput | Prisma.GROUPWhereInput[]
+  description?: Prisma.StringNullableFilter<"GROUP"> | string | null
   courseType?: Prisma.EnumCourseTypeFilter<"GROUP"> | $Enums.CourseType
   price?: Prisma.IntFilter<"GROUP"> | number
   students_count?: Prisma.IntFilter<"GROUP"> | number
@@ -283,6 +293,7 @@ export type GROUPWhereUniqueInput = Prisma.AtLeast<{
 export type GROUPOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   students_count?: Prisma.SortOrder
@@ -302,6 +313,7 @@ export type GROUPScalarWhereWithAggregatesInput = {
   NOT?: Prisma.GROUPScalarWhereWithAggregatesInput | Prisma.GROUPScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"GROUP"> | string
   name?: Prisma.StringWithAggregatesFilter<"GROUP"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"GROUP"> | string | null
   courseType?: Prisma.EnumCourseTypeWithAggregatesFilter<"GROUP"> | $Enums.CourseType
   price?: Prisma.IntWithAggregatesFilter<"GROUP"> | number
   students_count?: Prisma.IntWithAggregatesFilter<"GROUP"> | number
@@ -313,6 +325,7 @@ export type GROUPScalarWhereWithAggregatesInput = {
 export type GROUPCreateInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -326,6 +339,7 @@ export type GROUPCreateInput = {
 export type GROUPUncheckedCreateInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -339,6 +353,7 @@ export type GROUPUncheckedCreateInput = {
 export type GROUPUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -352,6 +367,7 @@ export type GROUPUpdateInput = {
 export type GROUPUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -365,6 +381,7 @@ export type GROUPUncheckedUpdateInput = {
 export type GROUPCreateManyInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -376,6 +393,7 @@ export type GROUPCreateManyInput = {
 export type GROUPUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -386,6 +404,7 @@ export type GROUPUpdateManyMutationInput = {
 export type GROUPUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -407,6 +426,7 @@ export type GROUPOrderByRelationAggregateInput = {
 export type GROUPCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   students_count?: Prisma.SortOrder
@@ -423,6 +443,7 @@ export type GROUPAvgOrderByAggregateInput = {
 export type GROUPMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   students_count?: Prisma.SortOrder
@@ -434,6 +455,7 @@ export type GROUPMaxOrderByAggregateInput = {
 export type GROUPMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   students_count?: Prisma.SortOrder
@@ -553,6 +575,7 @@ export type GROUPUpdateOneRequiredWithoutAttendancesNestedInput = {
 export type GROUPCreateWithoutStudentsInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -565,6 +588,7 @@ export type GROUPCreateWithoutStudentsInput = {
 export type GROUPUncheckedCreateWithoutStudentsInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -601,6 +625,7 @@ export type GROUPScalarWhereInput = {
   NOT?: Prisma.GROUPScalarWhereInput | Prisma.GROUPScalarWhereInput[]
   id?: Prisma.StringFilter<"GROUP"> | string
   name?: Prisma.StringFilter<"GROUP"> | string
+  description?: Prisma.StringNullableFilter<"GROUP"> | string | null
   courseType?: Prisma.EnumCourseTypeFilter<"GROUP"> | $Enums.CourseType
   price?: Prisma.IntFilter<"GROUP"> | number
   students_count?: Prisma.IntFilter<"GROUP"> | number
@@ -612,6 +637,7 @@ export type GROUPScalarWhereInput = {
 export type GROUPCreateWithoutTeacherInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -624,6 +650,7 @@ export type GROUPCreateWithoutTeacherInput = {
 export type GROUPUncheckedCreateWithoutTeacherInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -661,6 +688,7 @@ export type GROUPUpdateManyWithWhereWithoutTeacherInput = {
 export type GROUPCreateWithoutAttendancesInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -673,6 +701,7 @@ export type GROUPCreateWithoutAttendancesInput = {
 export type GROUPUncheckedCreateWithoutAttendancesInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -701,6 +730,7 @@ export type GROUPUpdateToOneWithWhereWithoutAttendancesInput = {
 export type GROUPUpdateWithoutAttendancesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -713,6 +743,7 @@ export type GROUPUpdateWithoutAttendancesInput = {
 export type GROUPUncheckedUpdateWithoutAttendancesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -725,6 +756,7 @@ export type GROUPUncheckedUpdateWithoutAttendancesInput = {
 export type GROUPUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -737,6 +769,7 @@ export type GROUPUpdateWithoutStudentsInput = {
 export type GROUPUncheckedUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -749,6 +782,7 @@ export type GROUPUncheckedUpdateWithoutStudentsInput = {
 export type GROUPUncheckedUpdateManyWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -760,6 +794,7 @@ export type GROUPUncheckedUpdateManyWithoutStudentsInput = {
 export type GROUPCreateManyTeacherInput = {
   id?: string
   name: string
+  description?: string | null
   courseType: $Enums.CourseType
   price: number
   students_count?: number
@@ -770,6 +805,7 @@ export type GROUPCreateManyTeacherInput = {
 export type GROUPUpdateWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -782,6 +818,7 @@ export type GROUPUpdateWithoutTeacherInput = {
 export type GROUPUncheckedUpdateWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -794,6 +831,7 @@ export type GROUPUncheckedUpdateWithoutTeacherInput = {
 export type GROUPUncheckedUpdateManyWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -844,6 +882,7 @@ export type GROUPCountOutputTypeCountAttendancesArgs<ExtArgs extends runtime.Typ
 export type GROUPSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  description?: boolean
   courseType?: boolean
   price?: boolean
   students_count?: boolean
@@ -859,6 +898,7 @@ export type GROUPSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type GROUPSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  description?: boolean
   courseType?: boolean
   price?: boolean
   students_count?: boolean
@@ -871,6 +911,7 @@ export type GROUPSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type GROUPSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  description?: boolean
   courseType?: boolean
   price?: boolean
   students_count?: boolean
@@ -883,6 +924,7 @@ export type GROUPSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type GROUPSelectScalar = {
   id?: boolean
   name?: boolean
+  description?: boolean
   courseType?: boolean
   price?: boolean
   students_count?: boolean
@@ -891,7 +933,7 @@ export type GROUPSelectScalar = {
   updatedAt?: boolean
 }
 
-export type GROUPOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "courseType" | "price" | "students_count" | "teacherId" | "createdAt" | "updatedAt", ExtArgs["result"]["gROUP"]>
+export type GROUPOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "courseType" | "price" | "students_count" | "teacherId" | "createdAt" | "updatedAt", ExtArgs["result"]["gROUP"]>
 export type GROUPInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   students?: boolean | Prisma.GROUP$studentsArgs<ExtArgs>
   attendances?: boolean | Prisma.GROUP$attendancesArgs<ExtArgs>
@@ -915,6 +957,7 @@ export type $GROUPPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    description: string | null
     courseType: $Enums.CourseType
     price: number
     students_count: number
@@ -1349,6 +1392,7 @@ export interface Prisma__GROUPClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface GROUPFieldRefs {
   readonly id: Prisma.FieldRef<"GROUP", 'String'>
   readonly name: Prisma.FieldRef<"GROUP", 'String'>
+  readonly description: Prisma.FieldRef<"GROUP", 'String'>
   readonly courseType: Prisma.FieldRef<"GROUP", 'CourseType'>
   readonly price: Prisma.FieldRef<"GROUP", 'Int'>
   readonly students_count: Prisma.FieldRef<"GROUP", 'Int'>
