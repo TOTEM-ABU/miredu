@@ -172,11 +172,11 @@ export class UserService {
   private generateOTP(length = 6): string {
     try {
       const digits = '0123456789';
-      let otp = '';
+      let otpCode = '';
       for (let i = 0; i < length; i++) {
-        otp += digits[Math.floor(Math.random() * 10)];
+        otpCode += digits[Math.floor(Math.random() * 10)];
       }
-      return otp;
+      return otpCode;
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
@@ -196,12 +196,16 @@ export class UserService {
 
     const hash = bcrypt.hashSync(data.password, 10);
     const otp = this.generateOTP();
+    const hashedOtp = await bcrypt.hash(otp, 10);
+    const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
 
     try {
       const newUser = await this.prisma.sTUDENT.create({
         data: {
           ...data,
           password: hash,
+          otpCode: hashedOtp,
+          otpExpires: otpExpires,
         },
       });
 
@@ -231,12 +235,16 @@ export class UserService {
 
     const hash = bcrypt.hashSync(data.password, 10);
     const otp = this.generateOTP();
+    const hashedOtp = await bcrypt.hash(otp, 10);
+    const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
 
     try {
       const newUser = await this.prisma.tEACHER.create({
         data: {
           ...data,
           password: hash,
+          otpCode: hashedOtp,
+          otpExpires: otpExpires,
         },
       });
 
@@ -266,12 +274,16 @@ export class UserService {
 
     const hash = bcrypt.hashSync(data.password, 10);
     const otp = this.generateOTP();
+    const hashedOtp = await bcrypt.hash(otp, 10);
+    const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
 
     try {
       const newUser = await this.prisma.aDMIN.create({
         data: {
           ...data,
           password: hash,
+          otpCode: hashedOtp,
+          otpExpires: otpExpires,
         },
       });
 
@@ -286,6 +298,7 @@ export class UserService {
       if (error instanceof HttpException) {
         throw error;
       }
+      console.log('Error in registerAdmin:', error);
       throw new InternalServerErrorException('Failed to register admin!');
     }
   }
@@ -323,27 +336,27 @@ export class UserService {
       if (!user || !userType) throw new NotFoundException('User not found!');
       if (user.isVerified) return { message: 'User already verified!' };
 
-      if (user.otpCode !== otp) throw new BadRequestException('Invalid OTP!');
-
-      const dbModel = this.prisma[userType] as any;
-
-      if (dbModel && typeof dbModel.update === 'function') {
-        await dbModel.update({
-          where: { id: user.id },
-          data: {
-            isVerified: true,
-            otpCode: null,
-            otpExpires: null,
-          },
-        });
-      } else {
-        throw new InternalServerErrorException('Database model mapping failed');
+      if (new Date() > user.otpExpires) {
+        throw new BadRequestException('OTP expired! Please resend.');
+      }
+      const isOtpValid = await bcrypt.compare(otp, user.otpCode);
+      if (!isOtpValid) {
+        throw new BadRequestException('Invalid OTP code!');
       }
 
-      return { message: 'Email verified successfully!' };
+      await (this.prisma[userType] as any).update({
+        where: { id: user.id },
+        data: {
+          isVerified: true,
+          otpCode: null,
+          otpExpires: null,
+        },
+      });
+
+      return { message: 'Email verified successfully! ✅' };
     } catch (error) {
       if (error instanceof HttpException) throw error;
-      throw new InternalServerErrorException('Failed to verify otp!');
+      throw new InternalServerErrorException('Failed to verify OTP!');
     }
   }
 
@@ -462,6 +475,7 @@ export class UserService {
       };
     } catch (error) {
       if (error instanceof HttpException) throw error;
+      console.log('Error in login:', error);
       throw new InternalServerErrorException('Failed to login!');
     }
   }

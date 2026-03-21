@@ -70,7 +70,7 @@ export class UserController {
     return this.UserService.updatePassword(req['user'], dto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @Patch('update-me')
   updateMe(@Req() req: any, @Body() dto: UpdateDto) {
     return this.UserService.updateUser(req.user.id, req.user.role, dto);
@@ -84,8 +84,7 @@ export class UserController {
   }
 
   @Roles(RoleType.ADMIN)
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @Get('GetAllStudentsWithFilters')
   @ApiQuery({ name: 'firstName', required: false })
   @ApiQuery({ name: 'lastName', required: false })
@@ -131,8 +130,7 @@ export class UserController {
   }
 
   @Roles(RoleType.ADMIN)
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @Get('GetAllTeachersWithFilters')
   @ApiQuery({ name: 'name', required: false })
   @ApiQuery({ name: 'email', required: false })
