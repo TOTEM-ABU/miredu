@@ -3,11 +3,12 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { UserModule } from './user/user.module';
-import { AttendanceModule } from './attendance/attendance.module';
-import { PaymentModule } from './payment/payment.module';
-import { GroupModule } from './group/group.module';
-import { MulterController, PrismaModule } from './tools';
+import { UserModule } from '../src/user/user.module';
+import { AttendanceModule } from '../src/attendance/attendance.module';
+import { PaymentModule } from '../src/payment/payment.module';
+import { GroupModule } from '../src/group/group.module';
+import { DashboardModule } from '../src/dashboard/dashboard.module';
+import { MulterController, PrismaModule } from '../src/tools';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { MulterController, PrismaModule } from './tools';
     AttendanceModule,
     PaymentModule,
     GroupModule,
+    DashboardModule,
   ],
   controllers: [MulterController],
 })
