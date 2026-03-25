@@ -198,30 +198,42 @@ export class UserService {
     const hashedOtp = await bcrypt.hash(otp, 10);
     const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
 
-    try {
-      const newUser = await this.prisma.sTUDENT.create({
-        data: {
-          ...data,
-          password: hash,
-          otpCode: hashedOtp,
-          otpExpires: otpExpires,
-        },
-      });
+    // Build prisma data — exclude avatar if not provided
+    const studentData: any = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: hash,
+      phoneNumber: data.phoneNumber,
+      parentsPhoneNumber: data.parentsPhoneNumber,
+      otpCode: hashedOtp,
+      otpExpires: otpExpires,
+    };
+    if (data.avatar) studentData.avatar = data.avatar;
 
+    let newUser: any;
+    try {
+      newUser = await this.prisma.sTUDENT.create({ data: studentData });
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      throw new InternalServerErrorException('Failed to create student: ' + error.message);
+    }
+
+    // Send OTP email — do NOT block registration if mail fails
+    try {
       await this.mailer.sendMail(
         data.email,
         'Your OTP Code',
         `Your OTP code is: ${otp}\n\nIt will expire in 5 minutes.`,
       );
-
-      return newUser;
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-      throw new InternalServerErrorException('Failed to register student!');
+    } catch (mailError) {
+      console.warn('[MailService] Failed to send OTP email:', mailError?.message);
+      // Log but don't throw — user is already created
     }
+
+    return newUser;
   }
+
 
   async registerTeacher(data: CreateTeacherDto) {
     const existingTeacher = await this.prisma.tEACHER.findFirst({

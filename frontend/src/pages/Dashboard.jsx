@@ -1,145 +1,177 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Users2, CreditCard, ArrowUpRight, Clock, UserPlus } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import {
+  Users, BookOpen, CreditCard, ArrowUpRight, Clock, UserPlus, Loader2
+} from 'lucide-react';
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+} from 'recharts';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
+import { motion } from 'framer-motion';
 
-const Dashboard = () => {
-  const [stats, setStats] = useState({ totalStudents: 0, totalGroups: 0, monthlyRevenue: 0 });
-  const [charts, setCharts] = useState({ attendance: [], payments: [] });
-  const [recent, setRecent] = useState({ students: [], payments: [] });
+const SPIN = `@keyframes spin { to { transform: rotate(360deg); } }`;
+
+export default function Dashboard() {
+  const [stats,   setStats]   = useState({ totalStudents: 0, totalGroups: 0, monthlyRevenue: 0 });
+  const [charts,  setCharts]  = useState({ attendance: [], payments: [] });
+  const [recent,  setRecent]  = useState({ students: [], payments: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    (async () => {
       try {
-        const [statsRes, chartsRes, recentRes] = await Promise.all([
+        const [s, c, r] = await Promise.all([
           api.get('/api/dashboard/stats'),
           api.get('/api/dashboard/charts'),
           api.get('/api/dashboard/recent'),
         ]);
-        setStats(statsRes.data);
-        setCharts(chartsRes.data);
-        setRecent(recentRes.data);
-      } catch (error) {
-        toast.error('Ma\'lumotlarni yuklashda xatolik!');
+        setStats(s.data  ?? {});
+        setCharts(c.data ?? { attendance: [], payments: [] });
+        setRecent(r.data ?? { students: [], payments: [] });
+      } catch {
+        toast.error("Ma'lumotlarni yuklashda xatolik!");
       } finally {
         setLoading(false);
       }
-    };
-    fetchData();
+    })();
   }, []);
 
-  if (loading) return null;
+  if (loading) return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', gap: '1rem' }}>
+      <Loader2 size={32} color="var(--primary)" style={{ animation: 'spin 1s linear infinite' }} />
+      <style>{SPIN}</style>
+    </div>
+  );
+
+  const statCards = [
+    { label: 'Jami Talabalar',  value: stats.totalStudents ?? 0,                             icon: Users,      color: '#6366f1', bg: 'rgba(99,102,241,0.12)' },
+    { label: 'Guruhlar soni',   value: stats.totalGroups ?? 0,                               icon: BookOpen,   color: '#34d399', bg: 'rgba(52,211,153,0.12)' },
+    { label: 'Oylik Tushum',    value: `${(stats.monthlyRevenue ?? 0).toLocaleString()} so'm`, icon: CreditCard, color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' },
+  ];
 
   return (
-    <div className="fade-in">
-      <header className="mb-10">
-        <h1 className="text-3xl font-extrabold text-white mb-2">Xush kelibsiz! 👋</h1>
-        <p className="text-muted">MirEdu o'quv markazining bugungi holati va statistikasi</p>
-      </header>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <style>{SPIN}</style>
 
+      {/* Page header */}
+      <div style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '2.25rem', fontWeight: 900, marginBottom: '0.4rem' }}>
+          Bosh sahifa 👋
+        </h1>
+        <p style={{ color: '#475569', fontWeight: 600 }}>MirEdu o'quv markazining bugungi holati</p>
+      </div>
+
+      {/* Stat cards */}
       <div className="stats-grid">
-        <div className="stat-card-new">
-          <div className="stat-icon-box bg-indigo-500/10 text-indigo-400">
-            <Users className="w-7 h-7" />
-          </div>
-          <div>
-            <p className="stat-label">Jami Talabalar</p>
-            <p className="stat-value">{stats.totalStudents}</p>
-          </div>
-        </div>
-
-        <div className="stat-card-new">
-          <div className="stat-icon-box bg-emerald-500/10 text-emerald-400">
-            <Users2 className="w-7 h-7" />
-          </div>
-          <div>
-            <p className="stat-label">Guruhlar soni</p>
-            <p className="stat-value">{stats.totalGroups}</p>
-          </div>
-        </div>
-
-        <div className="stat-card-new">
-          <div className="stat-icon-box bg-amber-500/10 text-amber-400">
-            <CreditCard className="w-7 h-7" />
-          </div>
-          <div>
-            <p className="stat-label">Oylik Tushum</p>
-            <p className="stat-value">{stats.monthlyRevenue.toLocaleString()} sum</p>
-          </div>
-        </div>
+        {statCards.map((s, i) => (
+          <motion.div
+            key={s.label}
+            className="stat-card"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.08 }}
+          >
+            <div className="stat-icon" style={{ background: s.bg }}>
+              <s.icon size={22} color={s.color} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#475569', marginBottom: '0.2rem' }}>
+                {s.label}
+              </div>
+              <div style={{ fontSize: '1.75rem', fontWeight: 900, color: '#f1f5f9' }}>{s.value}</div>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
-      <div className="charts-wrapper mb-8">
-        <div className="chart-container">
-          <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-            <ArrowUpRight className="text-primary w-5 h-5" /> Haftalik Davomat (%)
+      {/* Charts row */}
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+        {/* Attendance chart */}
+        <div className="content-card">
+          <h3 style={{ fontWeight: 800, fontSize: '1rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <ArrowUpRight size={18} color="var(--primary)" /> Haftalik Davomat (%)
           </h3>
-          <div style={{ width: '100%', height: 300 }}>
-            <ResponsiveContainer>
-              <LineChart data={charts.attendance}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                <XAxis dataKey="name" stroke="#64748b" axisLine={false} tickLine={false} dy={10} />
-                <YAxis stroke="#64748b" axisLine={false} tickLine={false} domain={[0, 100]} />
-                <Tooltip 
-                  contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: '1rem' }}
-                  itemStyle={{ color: '#8b5cf6' }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="percentage" 
-                  stroke="#8b5cf6" 
-                  strokeWidth={4} 
-                  dot={{ fill: '#8b5cf6', strokeWidth: 2, r: 6 }}
-                  activeDot={{ r: 8, stroke: '#fff', strokeWidth: 2 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          <ResponsiveContainer width="100%" height={240}>
+            <LineChart data={charts.attendance ?? []}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+              <XAxis dataKey="name" stroke="#334155" axisLine={false} tickLine={false} dy={8} tick={{ fontSize: 12, fontWeight: 700 }} />
+              <YAxis stroke="#334155" axisLine={false} tickLine={false} domain={[0, 100]} tick={{ fontSize: 12, fontWeight: 700 }} />
+              <Tooltip
+                contentStyle={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '0.85rem', fontSize: '0.875rem' }}
+                itemStyle={{ color: 'var(--primary)' }}
+              />
+              <Line type="monotone" dataKey="percentage" stroke="var(--primary)" strokeWidth={3}
+                dot={{ fill: 'var(--primary)', r: 5, strokeWidth: 0 }}
+                activeDot={{ r: 7, stroke: '#fff', strokeWidth: 2 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
 
-        <div className="recent-actions">
-          <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-            <Clock className="text-amber-500 w-5 h-5" /> Oxirgi To'lovlar
+        {/* Recent payments */}
+        <div className="content-card" style={{ overflowY: 'auto', maxHeight: '340px' }}>
+          <h3 style={{ fontWeight: 800, fontSize: '1rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'sticky', top: 0, background: 'rgba(15,23,42,0.8)', paddingBottom: '0.5rem', backdropFilter: 'blur(8px)' }}>
+            <Clock size={16} color="#f59e0b" /> Oxirgi To'lovlar
           </h3>
-          <div className="flex flex-col">
-            {recent.payments.map((p, idx) => (
-              <div key={idx} className="action-item">
-                <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-amber-500">
-                  <CreditCard className="w-5 h-5" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-bold text-white">{p.student.firstName} {p.student.lastName}</p>
-                  <p className="text-xs text-muted">{new Date(p.date).toLocaleDateString()}</p>
-                </div>
-                <p className="text-sm font-bold text-emerald-400">+{p.amount.toLocaleString()}</p>
+          {(recent.payments ?? []).length === 0 ? (
+            <p style={{ color: '#334155', fontSize: '0.875rem', fontWeight: 700, padding: '1rem 0' }}>To'lovlar topilmadi</p>
+          ) : (recent.payments).map((p, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ width: '2.25rem', height: '2.25rem', borderRadius: '50%', background: 'rgba(245,158,11,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <CreditCard size={14} color="#f59e0b" />
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="chart-container">
-        <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-          <UserPlus className="text-indigo-400 w-5 h-5" /> Yangi Talabalar
-        </h3>
-        <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3 gap-4">
-          {recent.students.map((s, idx) => (
-            <div key={idx} className="flex items-center gap-3 p-4 rounded-2xl bg-slate-900/50 border border-slate-800">
-              <div className="w-12 h-12 rounded-full overflow-hidden border border-slate-700">
-                <img src={s.avatar} alt={s.firstName} className="w-full h-full object-cover" />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 800, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {p.student?.firstName} {p.student?.lastName}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#475569', fontWeight: 700 }}>
+                  {p.date ? new Date(p.date).toLocaleDateString('uz-UZ') : '—'}
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-bold text-white">{s.firstName} {s.lastName}</p>
-                <p className="text-xs text-muted">{s.email}</p>
+              <div style={{ fontWeight: 900, fontSize: '0.875rem', color: '#34d399', flexShrink: 0 }}>
+                +{(p.amount ?? 0).toLocaleString()}
               </div>
             </div>
           ))}
         </div>
       </div>
-    </div>
-  );
-};
 
-export default Dashboard;
+      {/* Recent students */}
+      <div className="content-card">
+        <h3 style={{ fontWeight: 800, fontSize: '1rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <UserPlus size={18} color="var(--primary)" /> Yangi Talabalar
+        </h3>
+        {(recent.students ?? []).length === 0 ? (
+          <p style={{ color: '#334155', fontSize: '0.875rem', fontWeight: 700 }}>Talabalar topilmadi</p>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' }}>
+            {(recent.students).map((s, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: '0.85rem',
+                padding: '1rem', borderRadius: '0.85rem',
+                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
+              }}>
+                <div style={{ width: '2.75rem', height: '2.75rem', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: '2px solid rgba(99,102,241,0.3)' }}>
+                  <img
+                    src={s.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.firstName + ' ' + s.lastName)}&background=6366f1&color=fff`}
+                    alt={s.firstName}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={e => e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(s.firstName || 'U')}&background=6366f1&color=fff`}
+                  />
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontWeight: 800, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {s.firstName} {s.lastName}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#475569', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {s.email}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+}

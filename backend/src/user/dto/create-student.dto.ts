@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
-  IsPhoneNumber,
+  IsOptional,
   IsString,
   Length,
 } from 'class-validator';
@@ -30,20 +30,18 @@ export class CreateStudentDto {
   @IsNotEmpty()
   password: string;
 
-  @ApiProperty({ example: '+998XXXXXXXXX' })
+  @ApiProperty({ example: '+998901234567' })
   @IsString()
-  @IsPhoneNumber('UZ')
   @IsNotEmpty()
   phoneNumber: string;
 
-  @ApiProperty({ example: '+998XXXXXXXXX' })
+  @ApiProperty({ example: '+998901234567' })
   @IsString()
-  @IsPhoneNumber('UZ')
   @IsNotEmpty()
   parentsPhoneNumber: string;
 
-  @ApiProperty({ example: 'https://example.com.png/' })
+  @ApiProperty({ example: 'https://example.com.png/', required: false })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  avatar: string;
+  avatar?: string;
 }
