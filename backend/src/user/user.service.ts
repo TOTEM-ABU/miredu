@@ -249,29 +249,36 @@ export class UserService {
     const hashedOtp = await bcrypt.hash(otp, 10);
     const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
 
-    try {
-      const newUser = await this.prisma.tEACHER.create({
-        data: {
-          ...data,
-          password: hash,
-          otpCode: hashedOtp,
-          otpExpires: otpExpires,
-        },
-      });
+    // Build prisma data — exclude avatar if not provided
+    const teacherData: any = {
+      name: data.name,
+      email: data.email,
+      password: hash,
+      phoneNumber: data.phoneNumber,
+      otpCode: hashedOtp,
+      otpExpires: otpExpires,
+    };
+    if (data.avatar) teacherData.avatar = data.avatar;
 
+    let newUser: any;
+    try {
+      newUser = await this.prisma.tEACHER.create({ data: teacherData });
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      throw new InternalServerErrorException('Failed to create teacher: ' + error.message);
+    }
+
+    try {
       await this.mailer.sendMail(
         data.email,
         'Your OTP Code',
         `Your OTP code is: ${otp}\n\nIt will expire in 5 minutes.`,
       );
-
-      return newUser;
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-      throw new InternalServerErrorException('Failed to register teacher!');
+    } catch (mailError) {
+      console.warn('[MailService] Failed to send OTP email:', mailError?.message);
     }
+
+    return newUser;
   }
 
   async registerAdmin(data: CreateAdminDto) {
@@ -288,30 +295,35 @@ export class UserService {
     const hashedOtp = await bcrypt.hash(otp, 10);
     const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
 
-    try {
-      const newUser = await this.prisma.aDMIN.create({
-        data: {
-          ...data,
-          password: hash,
-          otpCode: hashedOtp,
-          otpExpires: otpExpires,
-        },
-      });
+    // Build prisma data — exclude avatar if not provided
+    const adminData: any = {
+      name: data.name,
+      email: data.email,
+      password: hash,
+      otpCode: hashedOtp,
+      otpExpires: otpExpires,
+    };
+    if (data.avatar) adminData.avatar = data.avatar;
 
+    let newUser: any;
+    try {
+      newUser = await this.prisma.aDMIN.create({ data: adminData });
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      throw new InternalServerErrorException('Failed to create admin: ' + error.message);
+    }
+
+    try {
       await this.mailer.sendMail(
         data.email,
         'Your OTP Code',
         `Your OTP code is: ${otp}\n\nIt will expire in 5 minutes.`,
       );
-
-      return newUser;
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-      console.log('Error in registerAdmin:', error);
-      throw new InternalServerErrorException('Failed to register admin!');
+    } catch (mailError) {
+      console.warn('[MailService] Failed to send OTP email:', mailError?.message);
     }
+
+    return newUser;
   }
 
   async verifyOtp(data: VerifyOtpDto) {
@@ -348,10 +360,13 @@ export class UserService {
       if (user.isVerified) return { message: 'User already verified!' };
 
       if (new Date() > user.otpExpires) {
+        console.log(`[verifyOtp ${email}] OTP expired. Current: ${new Date()}, Expires: ${user.otpExpires}`);
         throw new BadRequestException('OTP expired! Please resend.');
       }
+      console.log(`[verifyOtp ${email}] Comparing entered OTP '${otp}' with hash '${user.otpCode}'`);
       const isOtpValid = await bcrypt.compare(otp, user.otpCode);
       if (!isOtpValid) {
+        console.log(`[verifyOtp ${email}] Password match failed.`);
         throw new BadRequestException('Invalid OTP code!');
       }
 
@@ -370,26 +385,62 @@ export class UserService {
       throw new InternalServerErrorException('Failed to verify OTP!');
     }
   }
-
   async resendOtp(data: ResendOtpDto) {
     try {
-      const otp = this.generateOTP();
+      const { email } = data;
+      let user: any = null;
+      let userType: 'sTUDENT' | 'tEACHER' | 'aDMIN' | null = null;
 
-      await this.mailer.sendMail(
-        data.email,
-        'Your OTP Code',
-        `Your OTP code is: ${otp}\n\nIt will expire in 5 minutes.`,
-      );
+      const student = await this.prisma.sTUDENT.findUnique({ where: { email } });
+      if (student) {
+        user = student;
+        userType = 'sTUDENT';
+      } else {
+        const teacher = await this.prisma.tEACHER.findUnique({ where: { email } });
+        if (teacher) {
+          user = teacher;
+          userType = 'tEACHER';
+        } else {
+          const admin = await this.prisma.aDMIN.findUnique({ where: { email } });
+          if (admin) { user = admin; userType = 'aDMIN'; }
+        }
+      }
+
+      if (!user || !userType) {
+        throw new NotFoundException('User not found!');
+      }
+      if (user.isVerified) {
+        throw new BadRequestException('User is already verified!');
+      }
+
+      const otp = this.generateOTP();
+      console.log(`[resendOtp ${email}] GENERATED NEW OTP:`, otp);
+      const hashedOtp = await bcrypt.hash(otp, 10);
+      const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
+
+      // Save new OTP
+      await (this.prisma[userType] as any).update({
+        where: { id: user.id },
+        data: { otpCode: hashedOtp, otpExpires },
+      });
+
+      // Try sending mail
+      try {
+        await this.mailer.sendMail(
+          data.email,
+          'Your New OTP Code',
+          `Your new OTP code is: ${otp}\n\nIt will expire in 5 minutes.`,
+        );
+      } catch (mailError) {
+        console.warn('[MailService] Failed to resend OTP email:', mailError?.message);
+      }
 
       return { message: 'OTP sent successfully!' };
     } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
+      if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException('Failed to resend OTP!');
     }
   }
-
   async login(data: LoginDto, request: Request) {
     try {
       const { email, password } = data;

@@ -20,10 +20,16 @@ export default function Login() {
       localStorage.setItem('access_token', data.access_token);
       localStorage.setItem('refresh_token', data.refresh_token);
       localStorage.setItem('user', JSON.stringify({ ...data.user, role: data.role }));
-      toast.success(`Xush kelibsiz, ${data.user.firstName}!`);
+      toast.success(`Xush kelibsiz, ${data.user.firstName || data.user.name}!`);
       navigate(data.role === 'STUDENT' ? '/student-dashboard' : '/dashboard');
-    } catch {
-      toast.error('Login yoki parol xato');
+    } catch (err) {
+      const msg = err.message || '';
+      if (msg.toLowerCase().includes('verify')) {
+        toast.error("Iltimos, avval email'ni tasdiqlang!");
+        navigate('/verify-otp', { state: { email: form.email } });
+      } else {
+        toast.error('Login yoki parol xato');
+      }
     } finally {
       setLoading(false);
     }

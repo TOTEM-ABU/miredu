@@ -9,7 +9,7 @@ const ADMIN_MENU = [
   { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
   { name: 'Guruhlar', icon: BookOpen, path: '#' },
   { name: 'Talabalar', icon: Users, path: '#' },
-  { name: "O'qituvchilar", icon: UserSquare2, path: '#' },
+  { name: "O'qituvchilar", icon: UserSquare2, path: '/teachers' },
   { name: 'Davomat', icon: CalendarCheck, path: '#' },
   { name: "To'lovlar", icon: Wallet, path: '#' },
   { name: 'Sozlamalar', icon: Settings, path: '#' },

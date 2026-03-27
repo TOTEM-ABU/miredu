@@ -8,6 +8,8 @@ import VerifyOtp from './pages/VerifyOtp';
 import Dashboard from './pages/Dashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import DashboardLayout from './layouts/DashboardLayout';
+import AdminSetup from './pages/AdminSetup';
+import Teachers from './pages/Teachers';
 
 // ── Protected Route ──────────────────────────────────────────────────────────
 // Reads only from localStorage('user') which always stores { ...userData, role }
@@ -41,14 +43,25 @@ function App() {
         <Route path="/login"      element={<Login />} />
         <Route path="/register"   element={<Register />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/admin-setup" element={<AdminSetup />} />
 
-        {/* Admin / Teacher dashboard */}
+        {/* Admin / Teacher dashboard routes */}
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
               <DashboardLayout>
                 <Dashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teachers"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
+              <DashboardLayout>
+                <Teachers />
               </DashboardLayout>
             </ProtectedRoute>
           }
