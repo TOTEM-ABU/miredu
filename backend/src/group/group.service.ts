@@ -30,9 +30,11 @@ export class GroupService {
           courseType: data.courseType,
           price: data.price,
           description: data.description,
-          teacher: {
-            connect: { id: data.teacherId },
-          },
+          ...(data.teacherId && {
+            teacher: {
+              connect: { id: data.teacherId },
+            },
+          }),
         },
 
         include: {

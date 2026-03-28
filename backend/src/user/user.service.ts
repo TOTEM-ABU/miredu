@@ -48,31 +48,26 @@ export class UserService {
       ...(firstName && {
         firstName: {
           contains: firstName,
-          mode: 'insensitive',
         },
       }),
       ...(lastName && {
         lastName: {
           contains: lastName,
-          mode: 'insensitive',
         },
       }),
       ...(email && {
         email: {
           contains: email,
-          mode: 'insensitive',
         },
       }),
       ...(phoneNumber && {
         phoneNumber: {
           contains: phoneNumber,
-          mode: 'insensitive',
         },
       }),
       ...(parentsPhoneNumber && {
         parentsPhoneNumber: {
           contains: parentsPhoneNumber,
-          mode: 'insensitive',
         },
       }),
     };
@@ -123,25 +118,22 @@ export class UserService {
       ...(name && {
         name: {
           contains: name,
-          mode: 'insensitive',
         },
       }),
       ...(email && {
         email: {
           contains: email,
-          mode: 'insensitive',
         },
       }),
       ...(phoneNumber && {
         phoneNumber: {
           contains: phoneNumber,
-          mode: 'insensitive',
         },
       }),
     };
 
     try {
-      const user = await this.prisma.sTUDENT.findMany({
+      const teachers = await this.prisma.tEACHER.findMany({
         where,
         include: {
           groups: true,
@@ -151,10 +143,10 @@ export class UserService {
         take,
       });
 
-      const total = await this.prisma.sTUDENT.count({ where });
+      const total = await this.prisma.tEACHER.count({ where });
 
       return {
-        data: user,
+        data: teachers,
         total,
         page: Number(page),
         limit: take,

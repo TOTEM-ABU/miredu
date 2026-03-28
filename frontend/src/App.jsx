@@ -10,6 +10,8 @@ import StudentDashboard from './pages/StudentDashboard';
 import DashboardLayout from './layouts/DashboardLayout';
 import AdminSetup from './pages/AdminSetup';
 import Teachers from './pages/Teachers';
+import Profile from './pages/Profile';
+import Groups from './pages/Groups';
 
 // ── Protected Route ──────────────────────────────────────────────────────────
 // Reads only from localStorage('user') which always stores { ...userData, role }
@@ -67,6 +69,17 @@ function App() {
           }
         />
 
+        <Route
+          path="/groups"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
+              <DashboardLayout>
+                <Groups />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
         {/* Student dashboard */}
         <Route
           path="/student-dashboard"
@@ -80,6 +93,16 @@ function App() {
         />
 
         {/* Catch-all */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute allowedRoles={['STUDENT', 'TEACHER', 'ADMIN']}>
+              <DashboardLayout>
+                <Profile />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>

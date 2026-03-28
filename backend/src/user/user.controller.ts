@@ -89,7 +89,7 @@ export class UserController {
     return this.UserService.getMe(req['user'].id, req['user'].role);
   }
 
-  @Roles(RoleType.ADMIN)
+  @Roles(RoleType.ADMIN, RoleType.TEACHER)
   @UseGuards(AuthGuard, RoleGuard)
   @Get('GetAllStudentsWithFilters')
   @ApiQuery({ name: 'firstName', required: false })
@@ -135,7 +135,7 @@ export class UserController {
     });
   }
 
-  @Roles(RoleType.ADMIN)
+  @Roles(RoleType.ADMIN, RoleType.TEACHER)
   @UseGuards(AuthGuard, RoleGuard)
   @Get('GetAllTeachersWithFilters')
   @ApiQuery({ name: 'name', required: false })
@@ -156,7 +156,7 @@ export class UserController {
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   async findAll(
-    @Query('name') firstName?: string,
+    @Query('name') name?: string,
     @Query('email') email?: string,
     @Query('phoneNumber') phoneNumber?: string,
     @Query('sortBy') sortBy: string = 'createdAt',
@@ -165,7 +165,7 @@ export class UserController {
     @Query('limit') limit: number = 10,
   ) {
     return this.UserService.findAllTeacher({
-      firstName,
+      name,
       email,
       phoneNumber,
       sortBy,

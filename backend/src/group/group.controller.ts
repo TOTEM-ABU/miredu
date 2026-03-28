@@ -70,6 +70,13 @@ export class GroupController {
 
   @Roles(RoleType.ADMIN, RoleType.TEACHER)
   @UseGuards(AuthGuard, RoleGuard)
+  @Patch('addStudentToGroup')
+  addStudentToGroup(@Body() data: AddStudentsToGroupDto) {
+    return this.groupService.addStudentToGroup(data);
+  }
+
+  @Roles(RoleType.ADMIN, RoleType.TEACHER)
+  @UseGuards(AuthGuard, RoleGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.groupService.findOneGroup(id);
@@ -87,12 +94,5 @@ export class GroupController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.groupService.removeGroup(id);
-  }
-
-  @Roles(RoleType.ADMIN, RoleType.TEACHER)
-  @UseGuards(AuthGuard, RoleGuard)
-  @Patch('addStudentToGroup')
-  addStudentToGroup(@Body() data: AddStudentsToGroupDto) {
-    return this.groupService.addStudentToGroup(data);
   }
 }
