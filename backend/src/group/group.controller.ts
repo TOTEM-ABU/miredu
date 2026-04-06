@@ -82,14 +82,14 @@ export class GroupController {
     return this.groupService.findOneGroup(id);
   }
 
-  @Roles(RoleType.ADMIN)
+  @Roles(RoleType.ADMIN, RoleType.TEACHER)
   @UseGuards(AuthGuard, RoleGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
     return this.groupService.updateGroup(id, updateGroupDto);
   }
 
-  @Roles(RoleType.ADMIN)
+  @Roles(RoleType.ADMIN, RoleType.TEACHER)
   @UseGuards(AuthGuard, RoleGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {

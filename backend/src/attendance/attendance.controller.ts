@@ -37,6 +37,11 @@ export class AttendanceController {
 
   @Roles(RoleType.ADMIN, RoleType.TEACHER)
   @UseGuards(AuthGuard, RoleGuard)
+  @Post('bulk')
+  bulkCreate(@Body() data: any) {
+    return this.attendanceService.bulkCreate(data);
+  }
+
   @Get()
   @ApiOperation({ summary: 'Barcha davomatlarni filtr bilan olish' })
   @ApiQuery({ name: 'groupId', required: false })

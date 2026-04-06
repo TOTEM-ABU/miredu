@@ -114,6 +114,7 @@ model GROUP {
   description    String?
   courseType     CourseType
   price          Int  
+  days           String?    @default("")
   students_count Int        @default(0)
 
   students    STUDENT[]

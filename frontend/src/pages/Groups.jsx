@@ -17,7 +17,7 @@ const KEYFRAMES = `
 
 export default function Groups() {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const isAdmin = user.role === 'ADMIN';
+  const isAdmin = user.role === 'ADMIN' || user.role === 'TEACHER';
 
   const [groups, setGroups] = useState([]);
   const [teachers, setTeachers] = useState([]);
@@ -199,9 +199,6 @@ export default function Groups() {
 
 // ── Card Component ─────────────────────────────────────────────────────────
 function GroupCard({ group, isAdmin, onEdit, onDelete, onAssign }) {
-  const teacherName = group.teacher?.name || 'T';
-  const initial = teacherName.charAt(0).toUpperCase();
-
   return (
     <motion.div
       layout
@@ -268,26 +265,41 @@ function GroupCard({ group, isAdmin, onEdit, onDelete, onAssign }) {
         paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)'
       }}>
         <div style={{
-          width: 32, height: 32, borderRadius: '50%', overflow: 'hidden',
+          width: 36, height: 36, borderRadius: '50%', overflow: 'hidden',
           border: '2px solid rgba(99,102,241,0.3)',
           background: 'rgba(99,102,241,0.1)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center'
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0
         }}>
           {group.teacher?.avatar ? (
             <img
               src={group.teacher.avatar}
               alt="Teacher"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              onError={(e) => {
+                e.target.onerror = null; // Infinite loop dan saqlanish
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
             />
-          ) : (
-            <span style={{ color: '#818cf8', fontSize: '0.8rem', fontWeight: 900 }}>{initial}</span>
-          )}
+          ) : null}
+          <div style={{
+            display: group.teacher?.avatar ? 'none' : 'flex',
+            width: '100%', height: '100%',
+            alignItems: 'center', justifyContent: 'center',
+            color: '#818cf8', fontSize: '0.85rem', fontWeight: 900,
+            textTransform: 'uppercase'
+          }}>
+            {group.teacher?.name ? group.teacher.name.split(' ').map(n => n[0]).join('').slice(0, 2) : 'T'}
+          </div>
         </div>
-        <div>
-          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#f1f5f9' }}>{group.teacher?.name || 'Biriktirilmagan'}</div>
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#f1f5f9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {group.teacher?.name || 'Biriktirilmagan'}
+          </div>
           <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 700 }}>O'qituvchi</div>
         </div>
-        <ChevronRight size={18} style={{ marginLeft: 'auto', color: '#334155' }} />
+        <ChevronRight size={18} style={{ marginLeft: 'auto', color: '#334155', flexShrink: 0 }} />
       </div>
     </motion.div>
   );
@@ -444,7 +456,7 @@ function AssignStudentModal({ isOpen, onClose, onSuccess, group }) {
 function GroupModal({ isOpen, onClose, onSuccess, editingGroup, teachers }) {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    name: '', courseType: 'English', price: '', description: '', teacherId: ''
+    name: '', courseType: 'English', price: '', description: '', teacherId: '', days: '1,3,5'
   });
 
   useEffect(() => {
@@ -454,10 +466,11 @@ function GroupModal({ isOpen, onClose, onSuccess, editingGroup, teachers }) {
         courseType: editingGroup.courseType,
         price: editingGroup.price.toString(),
         description: editingGroup.description || '',
-        teacherId: editingGroup.teacherId || ''
+        teacherId: editingGroup.teacherId || '',
+        days: editingGroup.days || '1,3,5'
       });
     } else {
-      setForm({ name: '', courseType: 'English', price: '', description: '', teacherId: '' });
+      setForm({ name: '', courseType: 'English', price: '', description: '', teacherId: '', days: '1,3,5' });
     }
   }, [editingGroup, isOpen]);
 
@@ -558,6 +571,41 @@ function GroupModal({ isOpen, onClose, onSuccess, editingGroup, teachers }) {
                         <option key={t.id} value={t.id} style={{ background: '#0f172a' }}>{t.name}</option>
                       ))}
                     </select>
+                  </div>
+                </div>
+
+                {/* Day Selector */}
+                <div className="field-group">
+                  <label className="field-label">Dars Kunlari</label>
+                  <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                    {[
+                      { id: '1', label: 'Du' }, { id: '2', label: 'Se' },
+                      { id: '3', label: 'Chor' }, { id: '4', label: 'Pay' },
+                      { id: '5', label: 'Ju' }, { id: '6', label: 'Sha' },
+                      { id: '0', label: 'Yak' }
+                    ].map(day => {
+                      const isActive = form.days.split(',').includes(day.id);
+                      return (
+                        <button
+                          key={day.id}
+                          type="button"
+                          onClick={() => {
+                            const current = form.days ? form.days.split(',') : [];
+                            const next = isActive ? current.filter(d => d !== day.id) : [...current, day.id];
+                            setForm({ ...form, days: next.sort().join(',') });
+                          }}
+                          style={{
+                            padding: '0.5rem 0.8rem', borderRadius: '0.6rem', border: '1px solid',
+                            background: isActive ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
+                            color: isActive ? '#fff' : '#64748b',
+                            borderColor: isActive ? 'var(--primary)' : 'rgba(255,255,255,0.08)',
+                            fontSize: '0.75rem', fontWeight: 800, cursor: 'pointer', transition: 'all 0.2s'
+                          }}
+                        >
+                          {day.label}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 

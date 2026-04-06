@@ -10,7 +10,7 @@ const ADMIN_MENU = [
   { name: 'Guruhlar', icon: BookOpen, path: '/groups' },
   { name: 'Talabalar', icon: Users, path: '#' },
   { name: "O'qituvchilar", icon: UserSquare2, path: '/teachers' },
-  { name: 'Davomat', icon: CalendarCheck, path: '#' },
+  { name: 'Davomat', icon: CalendarCheck, path: '/attendance' },
   { name: "To'lovlar", icon: Wallet, path: '#' },
   { name: 'Sozlamalar', icon: Settings, path: '/profile' },
 ];

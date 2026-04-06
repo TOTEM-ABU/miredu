@@ -30,6 +30,7 @@ export class GroupService {
           courseType: data.courseType,
           price: data.price,
           description: data.description,
+          days: data.days,
           ...(data.teacherId && {
             teacher: {
               connect: { id: data.teacherId },
@@ -110,6 +111,7 @@ export class GroupService {
           courseType: data.courseType,
           price: data.price,
           description: data.description,
+          days: data.days,
           ...(data.teacherId && {
             teacher: { connect: { id: data.teacherId } },
           }),
@@ -154,6 +156,7 @@ export class GroupService {
         where: { id },
         include: {
           teacher: true,
+          students: true,
         },
       });
 

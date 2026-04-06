@@ -14,6 +14,42 @@ export class AttendanceService {
 
   async create(data: CreateAttendanceDto) {
     try {
+      // 1. Guruh kunlarini tekshirish (Validation)
+      const group = await this.prisma.gROUP.findUnique({
+        where: { id: data.groupId },
+        select: { days: true },
+      });
+
+      if (group?.days) {
+        const attendanceDate = data.date ? new Date(data.date) : new Date();
+        const dayOfWeek = attendanceDate.getDay(); // 0 (Sun) - 6 (Sat)
+        const allowedDays = group.days.split(',').map((d) => Number(d.trim()));
+
+        if (!allowedDays.includes(dayOfWeek)) {
+          throw new HttpException(
+            `Bu guruhda haftaning bu kunida dars yo'q! (Ruxsat etilgan: ${group.days})`,
+            400,
+          );
+        }
+      }
+
+      // 2. Upsert (Agar bor bo'lsa yangilash, yo'q bo'lsa yaratish - Duplicate check)
+      const targetDate = data.date ? new Date(data.date) : new Date();
+      const startOfDay = new Date(targetDate.setHours(0, 0, 0, 0));
+      const endOfDay = new Date(targetDate.setHours(23, 59, 59, 999));
+
+      const existing = await this.prisma.aTTENDANCE.findFirst({
+        where: {
+          groupId: data.groupId,
+          studentId: data.studentId,
+          date: { gte: startOfDay, lte: endOfDay },
+        },
+      });
+
+      if (existing) {
+        return this.update(existing.id, { status: data.status });
+      }
+
       const newAttendance = await this.prisma.aTTENDANCE.create({
         data: {
           status: data.status,
@@ -35,6 +71,20 @@ export class AttendanceService {
       if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException('Davomat yaratishda xatolik!');
     }
+  }
+
+  async bulkCreate(data: { groupId: string; date: string; records: { studentId: string; status: any }[] }) {
+    const results: any[] = [];
+    for (const record of data.records) {
+      const res = await this.create({
+        groupId: data.groupId,
+        date: data.date,
+        studentId: record.studentId,
+        status: record.status,
+      });
+      results.push(res);
+    }
+    return results;
   }
 
   async findAll(query: any) {

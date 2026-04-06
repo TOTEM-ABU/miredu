@@ -28,6 +28,10 @@ export class CreateGroupDto {
   @IsNotEmpty()
   price: number;
 
+  @ApiProperty({ example: '1,3,5' })
+  @IsString()
+  days: string;
+
   @ApiProperty({ example: 'Teacher`s UUID' })
   @IsUUID()
   teacherId?: string;

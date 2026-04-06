@@ -11,6 +11,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import AdminSetup from './pages/AdminSetup';
 import Teachers from './pages/Teachers';
 import Profile from './pages/Profile';
+import Attendance from './pages/Attendance';
 import Groups from './pages/Groups';
 
 // ── Protected Route ──────────────────────────────────────────────────────────
@@ -75,6 +76,17 @@ function App() {
             <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
               <DashboardLayout>
                 <Groups />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/attendance"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
+              <DashboardLayout>
+                <Attendance />
               </DashboardLayout>
             </ProtectedRoute>
           }
