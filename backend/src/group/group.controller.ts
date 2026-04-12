@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  Req,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -73,6 +74,13 @@ export class GroupController {
   @Patch('addStudentToGroup')
   addStudentToGroup(@Body() data: AddStudentsToGroupDto) {
     return this.groupService.addStudentToGroup(data);
+  }
+
+  @Roles(RoleType.STUDENT)
+  @UseGuards(AuthGuard, RoleGuard)
+  @Get('my-groups')
+  findMyGroups(@Req() req) {
+    return this.groupService.findMyGroups(req.user.id);
   }
 
   @Roles(RoleType.ADMIN, RoleType.TEACHER)

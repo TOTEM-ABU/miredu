@@ -13,6 +13,9 @@ import Teachers from './pages/Teachers';
 import Profile from './pages/Profile';
 import Attendance from './pages/Attendance';
 import Groups from './pages/Groups';
+import Payments from './pages/Payments';
+import Students from './pages/Students';
+import MyGroups from './pages/MyGroups';
 
 // ── Protected Route ──────────────────────────────────────────────────────────
 // Reads only from localStorage('user') which always stores { ...userData, role }
@@ -92,6 +95,28 @@ function App() {
           }
         />
 
+        <Route
+          path="/payments"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
+              <DashboardLayout>
+                <Payments />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/students"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
+              <DashboardLayout>
+                <Students />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
         {/* Student dashboard */}
         <Route
           path="/student-dashboard"
@@ -99,6 +124,17 @@ function App() {
             <ProtectedRoute allowedRoles={['STUDENT']}>
               <DashboardLayout>
                 <StudentDashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/my-groups"
+          element={
+            <ProtectedRoute allowedRoles={['STUDENT']}>
+              <DashboardLayout>
+                <MyGroups />
               </DashboardLayout>
             </ProtectedRoute>
           }

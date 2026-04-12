@@ -8,18 +8,18 @@ import {
 const ADMIN_MENU = [
   { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
   { name: 'Guruhlar', icon: BookOpen, path: '/groups' },
-  { name: 'Talabalar', icon: Users, path: '#' },
+  { name: 'Talabalar', icon: Users, path: '/students' },
   { name: "O'qituvchilar", icon: UserSquare2, path: '/teachers' },
   { name: 'Davomat', icon: CalendarCheck, path: '/attendance' },
-  { name: "To'lovlar", icon: Wallet, path: '#' },
+  { name: "To'lovlar", icon: Wallet, path: '/payments' },
   { name: 'Sozlamalar', icon: Settings, path: '/profile' },
 ];
 
 const STUDENT_MENU = [
   { name: 'Dashboard', icon: LayoutDashboard, path: '/student-dashboard' },
-  { name: 'Guruhlarim', icon: BookOpen, path: '/groups' },
+  { name: 'Guruhlarim', icon: BookOpen, path: '/my-groups' },
   { name: 'Davomatlarim', icon: CalendarCheck, path: '#' },
-  { name: "To'lovlarim", icon: Wallet, path: '#' },
+  { name: "To'lovlarim", icon: Wallet, path: '/payments' },
   { name: 'Statistika', icon: PieChart, path: '#' },
   { name: 'Sozlamalar', icon: Settings, path: '/profile' },
 ];

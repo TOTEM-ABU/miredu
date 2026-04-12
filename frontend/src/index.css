@@ -181,6 +181,24 @@ input:-webkit-autofill:focus {
 }
 .btn-ghost:hover { color: var(--primary); }
 
+.btn-icon {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.65rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-icon:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2.5px);
+}
+.btn-icon:active { transform: translateY(0); }
+
 .link-primary {
   color: var(--primary);
   font-weight: 800;

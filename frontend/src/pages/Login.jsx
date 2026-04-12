@@ -76,7 +76,7 @@ export default function Login() {
               <label className="field-label">Parol</label>
               <div className="field-wrap">
                 <Lock className="field-icon" size={17} />
-                <input name="password" type="password" required className="field-input" placeholder="••••••••" onChange={onChange} />
+                <input name="password" type="password" required className="field-input" placeholder="••••••••" autoComplete="current-password" onChange={onChange} />
               </div>
             </div>
 
