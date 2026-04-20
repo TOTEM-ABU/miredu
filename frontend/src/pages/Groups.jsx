@@ -273,13 +273,14 @@ function GroupCard({ group, isAdmin, onEdit, onDelete, onAssign }) {
         }}>
           {group.teacher?.avatar ? (
             <img
-              src={group.teacher.avatar}
+              src={group.teacher.avatar.startsWith('http') ? group.teacher.avatar : `http://localhost:3000${group.teacher.avatar}`}
               alt="Teacher"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               onError={(e) => {
-                e.target.onerror = null; // Infinite loop dan saqlanish
                 e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
+                if (e.target.nextSibling) {
+                  e.target.nextSibling.style.display = 'flex';
+                }
               }}
             />
           ) : null}
@@ -290,7 +291,7 @@ function GroupCard({ group, isAdmin, onEdit, onDelete, onAssign }) {
             color: '#818cf8', fontSize: '0.85rem', fontWeight: 900,
             textTransform: 'uppercase'
           }}>
-            {group.teacher?.name ? group.teacher.name.split(' ').map(n => n[0]).join('').slice(0, 2) : 'T'}
+            {group.teacher?.name ? group.teacher.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?'}
           </div>
         </div>
         <div style={{ minWidth: 0, flex: 1 }}>

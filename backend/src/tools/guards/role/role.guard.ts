@@ -29,7 +29,12 @@ class RoleGuard implements CanActivate {
       throw new UnauthorizedException('User role not found in request');
     }
 
-    if (requiredRoles.some((role) => role === userRole)) {
+    // Rollarni solishtirishda harf kattaligiga (case) e'tibor bermaslik - Sifat uchun
+    const hasRole = requiredRoles.some(
+      (role) => role.toString().toUpperCase() === userRole.toString().toUpperCase(),
+    );
+
+    if (hasRole) {
       return true;
     }
 

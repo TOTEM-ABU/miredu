@@ -19,6 +19,7 @@ api.interceptors.request.use(
 let isRefreshing = false;
 let failedQueue = [];
 
+// Xatoliklarni navbatga qo'shish va bir vaqtning o'zida bir nechta so'rovni qayta ishlash
 const processQueue = (error, token = null) => {
   failedQueue.forEach(prom => {
     if (error) prom.reject(error);
@@ -34,18 +35,19 @@ api.interceptors.response.use(
     const status = error.response?.status;
     const message = error.response?.data?.message || 'Xatolik yuz berdi';
 
-    // 401 va retry qilinmagan so'rov → refresh urinib ko'ramiz
+    // Agarda 401 (Unauthorized) bo'lsa va bu retry bo'lmasa
     if (status === 401 && !originalRequest._retry) {
       const refreshToken = localStorage.getItem('refresh_token');
 
+      // Refresh token yo'q bo'lsa, tizimdan chiqaramiz
       if (!refreshToken) {
         localStorage.clear();
         window.location.href = '/login';
-        return Promise.reject(new Error(message));
+        return Promise.reject(new Error("Sessiya muddati tugagan. Qaytadan kiring."));
       }
 
+      // Agarda allaqachon birinchi so'rov refresh qilayotgan bo'lsa
       if (isRefreshing) {
-        // Boshqa refresh ketayotgan bo'lsa, navbatga qo'shamiz
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then(token => {
@@ -58,16 +60,28 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
+        // Yangi access_token olish urinishi
         const { data } = await axios.post('/api/User/refresh-token', { refresh_token: refreshToken });
         const newToken = data.access_token;
+        
+        if (!newToken) throw new Error("Yangi token olinmadi");
+
         localStorage.setItem('access_token', newToken);
+        
+        // Global header'ni yangilash
         api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+        
+        // Kutayotgan barcha so'rovlarni yangi token bilan yuborish
         processQueue(null, newToken);
+        
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (refreshError) {
+        // Refresh ham muvaffaqiyatsiz bo'lsa - to'liq logout
         processQueue(refreshError, null);
-        localStorage.clear();
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
         window.location.href = '/login';
         return Promise.reject(refreshError);
       } finally {
@@ -75,6 +89,7 @@ api.interceptors.response.use(
       }
     }
 
+    // Xatolikni standard formatda qaytarish
     return Promise.reject(new Error(Array.isArray(message) ? message.join(', ') : message));
   }
 );

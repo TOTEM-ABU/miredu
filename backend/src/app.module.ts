@@ -18,7 +18,7 @@ import { MulterController, PrismaModule } from '../src/tools';
     }),
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET,
+      secret: process.env.ACCESS_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
     ServeStaticModule.forRoot({

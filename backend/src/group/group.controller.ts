@@ -22,6 +22,12 @@ import { AddStudentsToGroupDto } from './dto/add-students-to-group.dto';
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
+  @UseGuards(AuthGuard)
+  @Get('my-groups')
+  findMyGroups(@Req() req: any) {
+    return this.groupService.findMyGroups(req.user?.id);
+  }
+
   @Roles(RoleType.ADMIN)
   @UseGuards(AuthGuard, RoleGuard)
   @Post()
@@ -73,15 +79,10 @@ export class GroupController {
   @UseGuards(AuthGuard, RoleGuard)
   @Patch('addStudentToGroup')
   addStudentToGroup(@Body() data: AddStudentsToGroupDto) {
+    console.log("Adding student to group request received:", data);
     return this.groupService.addStudentToGroup(data);
   }
 
-  @Roles(RoleType.STUDENT)
-  @UseGuards(AuthGuard, RoleGuard)
-  @Get('my-groups')
-  findMyGroups(@Req() req) {
-    return this.groupService.findMyGroups(req.user.id);
-  }
 
   @Roles(RoleType.ADMIN, RoleType.TEACHER)
   @UseGuards(AuthGuard, RoleGuard)
