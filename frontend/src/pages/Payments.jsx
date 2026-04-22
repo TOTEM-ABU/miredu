@@ -155,12 +155,12 @@ export default function Payments() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
                       <div style={{ width: 38, height: 38, borderRadius: '50%', background: 'rgba(99,102,241,0.15)', border: '2px solid rgba(99,102,241,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#818cf8', fontWeight: 900, fontSize: '0.9rem', overflow: 'hidden', flexShrink: 0 }}>
                         {p.student && p.student.avatar ? (
-                           <img 
-                             src={p.student.avatar.startsWith('http') ? p.student.avatar : `http://localhost:3000${p.student.avatar}`}
-                             alt="Avatar"
-                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                             onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
-                           />
+                          <img
+                            src={p.student.avatar.startsWith('http') ? p.student.avatar : `http://localhost:3000${p.student.avatar}`}
+                            alt="Avatar"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                          />
                         ) : null}
                         <span style={{ display: (p.student && p.student.avatar) ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
                           {p.student?.firstName?.[0]?.toUpperCase() || ''}{p.student?.lastName?.[0]?.toUpperCase() || ''}
@@ -219,7 +219,7 @@ export default function Payments() {
       />
 
       {/* Edit Payment Modal Component */}
-      <EditPaymentModal 
+      <EditPaymentModal
         payment={editPayment}
         onClose={() => setEditPayment(null)}
         onSuccess={() => { setEditPayment(null); fetchPayments(); }}
@@ -252,11 +252,27 @@ function StatCard({ label, value, icon: Icon, color }) {
 
 // ── Add Payment Modal ────────────────────────────────────────────────────────
 function AddPaymentModal({ isOpen, onClose, onSuccess }) {
-  const [form, setForm] = useState({ studentId: '', amount: '', paymentType: 'CASH', status: 'PAID' });
+  const [form, setForm] = useState({
+    studentId: '',
+    coursePrice: '',
+    amount: '',
+    date: new Date().toISOString().split('T')[0],
+    paymentType: 'CASH',
+    status: 'PAID'
+  });
   const [search, setSearch] = useState('');
   const [students, setStudents] = useState([]);
+  const [groups, setGroups] = useState([]);
   const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      api.get('/api/group/GetAllGroupsWithFilters?limit=100')
+        .then(res => setGroups(res.data.data || []))
+        .catch(console.error);
+    }
+  }, [isOpen]);
 
   const handleSearch = async (val) => {
     setSearch(val);
@@ -273,8 +289,33 @@ function AddPaymentModal({ isOpen, onClose, onSuccess }) {
     if (!form.studentId) return toast.error('O\'quvchini tanlang');
     setLoading(true);
     try {
-      await api.post('/api/payment', { ...form, amount: Number(form.amount) });
-      toast.success('To\'lov qabul qilindi! ✅');
+      const paidAmount = Number(form.amount);
+      const coursePrice = Number(form.coursePrice);
+
+      // Asosiy to'lovni yaratish
+      await api.post('/api/payment', {
+        studentId: form.studentId,
+        amount: paidAmount,
+        date: form.date ? new Date(form.date).toISOString() : undefined,
+        paymentType: form.paymentType,
+        status: form.status
+      });
+
+      // Agar kurs narxi kiritilgan bo'lsa va to'langan summadan katta bo'lsa, Qarz (PENDING) yaratish
+      if (coursePrice > 0 && coursePrice > paidAmount && form.status === 'PAID') {
+        const debtAmount = coursePrice - paidAmount;
+        await api.post('/api/payment', {
+          studentId: form.studentId,
+          amount: debtAmount,
+          date: form.date ? new Date(form.date).toISOString() : undefined,
+          paymentType: form.paymentType,
+          status: 'PENDING'
+        });
+        toast.success(`To'lov qabul qilindi va ${new Intl.NumberFormat('uz-UZ').format(debtAmount)} so'm qarz (kutilayotgan) ga o'tkazildi! ✅`);
+      } else {
+        toast.success('To\'lov qabul qilindi! ✅');
+      }
+
       onSuccess();
     } catch (err) {
       toast.error(err.response?.data?.message || 'Xatolik yuz berdi');
@@ -296,10 +337,10 @@ function AddPaymentModal({ isOpen, onClose, onSuccess }) {
             exit={{ opacity: 0, scale: 0.9, x: '-50%', y: '-40%' }}
             style={{
               position: 'fixed', top: '50%', left: '50%',
-              zIndex: 1001, width: '100%', maxWidth: '500px', padding: '1.5rem'
+              zIndex: 1001, width: '100%', maxWidth: '550px', padding: '1.5rem'
             }}
           >
-            <div className="auth-card" style={{ padding: '2.5rem', position: 'relative' }}>
+            <div className="auth-card" style={{ padding: '2.5rem', position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
               <button onClick={onClose} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}>
                 <X size={20} />
               </button>
@@ -339,13 +380,43 @@ function AddPaymentModal({ isOpen, onClose, onSuccess }) {
                 </div>
 
                 <div className="field-group">
-                  <label className="field-label">Summa (so'm)</label>
+                  <label className="field-label">To'lov Sanasi (Haqiqiy davr boshlanishi)</label>
                   <div className="field-wrap">
-                    <DollarSign className="field-icon" size={17} />
+                    <Calendar className="field-icon" size={17} />
                     <input
-                      type="number" required className="field-input" placeholder="Masalan: 500000"
-                      value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })}
+                      type="date" required className="field-input"
+                      value={form.date} onChange={e => setForm({ ...form, date: e.target.value })}
                     />
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div className="field-group">
+                    <label className="field-label">Kursni tanlang</label>
+                    <select
+                      className="field-input"
+                      onChange={e => {
+                        const selectedGroup = groups.find(g => g.id === e.target.value);
+                        setForm({ ...form, coursePrice: selectedGroup ? selectedGroup.price : '' });
+                      }}
+                    >
+                      <option style={{ background: '#0f172a', color: '#f1f5f9' }} value="">Tanlanmagan</option>
+                      {groups.map(g => (
+                        <option key={g.id} style={{ background: '#0f172a', color: '#f1f5f9' }} value={g.id}>
+                          {g.name} - {new Intl.NumberFormat('uz-UZ').format(g.price)} so'm
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="field-group">
+                    <label className="field-label">To'langan Summa</label>
+                    <div className="field-wrap">
+                      <DollarSign className="field-icon" size={17} />
+                      <input
+                        type="number" required className="field-input" placeholder="Masalan: 500000"
+                        value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })}
+                      />
+                    </div>
                   </div>
                 </div>
 

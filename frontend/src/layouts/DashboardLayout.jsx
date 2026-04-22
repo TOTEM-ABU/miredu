@@ -19,7 +19,7 @@ const STUDENT_MENU = [
   { name: 'Dashboard', icon: LayoutDashboard, path: '/student-dashboard' },
   { name: 'Guruhlarim', icon: BookOpen, path: '/my-groups' },
   { name: 'Davomatlarim', icon: CalendarCheck, path: '/my-attendances' },
-  { name: "To'lovlarim", icon: Wallet, path: '/payments' },
+  { name: "To'lovlarim", icon: Wallet, path: '/my-payments' },
   { name: 'Statistika', icon: PieChart, path: '#' },
   { name: 'Sozlamalar', icon: Settings, path: '/profile' },
 ];
