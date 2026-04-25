@@ -304,10 +304,10 @@ export type STUDENTWhereInput = {
   refreshToken?: Prisma.StringNullableFilter<"STUDENT"> | string | null
   createdAt?: Prisma.DateTimeFilter<"STUDENT"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"STUDENT"> | Date | string
-  groups?: Prisma.GROUPListRelationFilter
   attendances?: Prisma.ATTENDANCEListRelationFilter
   payments?: Prisma.PAYMENTListRelationFilter
   sessions?: Prisma.SESSIONListRelationFilter
+  groups?: Prisma.GROUPListRelationFilter
 }
 
 export type STUDENTOrderByWithRelationInput = {
@@ -327,10 +327,10 @@ export type STUDENTOrderByWithRelationInput = {
   refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  groups?: Prisma.GROUPOrderByRelationAggregateInput
   attendances?: Prisma.ATTENDANCEOrderByRelationAggregateInput
   payments?: Prisma.PAYMENTOrderByRelationAggregateInput
   sessions?: Prisma.SESSIONOrderByRelationAggregateInput
+  groups?: Prisma.GROUPOrderByRelationAggregateInput
 }
 
 export type STUDENTWhereUniqueInput = Prisma.AtLeast<{
@@ -353,10 +353,10 @@ export type STUDENTWhereUniqueInput = Prisma.AtLeast<{
   refreshToken?: Prisma.StringNullableFilter<"STUDENT"> | string | null
   createdAt?: Prisma.DateTimeFilter<"STUDENT"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"STUDENT"> | Date | string
-  groups?: Prisma.GROUPListRelationFilter
   attendances?: Prisma.ATTENDANCEListRelationFilter
   payments?: Prisma.PAYMENTListRelationFilter
   sessions?: Prisma.SESSIONListRelationFilter
+  groups?: Prisma.GROUPListRelationFilter
 }, "id" | "email" | "phoneNumber" | "parentsPhoneNumber">
 
 export type STUDENTOrderByWithAggregationInput = {
@@ -422,10 +422,10 @@ export type STUDENTCreateInput = {
   refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  groups?: Prisma.GROUPCreateNestedManyWithoutStudentsInput
   attendances?: Prisma.ATTENDANCECreateNestedManyWithoutStudentInput
   payments?: Prisma.PAYMENTCreateNestedManyWithoutStudentInput
   sessions?: Prisma.SESSIONCreateNestedManyWithoutStudentInput
+  groups?: Prisma.GROUPCreateNestedManyWithoutStudentsInput
 }
 
 export type STUDENTUncheckedCreateInput = {
@@ -445,10 +445,10 @@ export type STUDENTUncheckedCreateInput = {
   refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  groups?: Prisma.GROUPUncheckedCreateNestedManyWithoutStudentsInput
   attendances?: Prisma.ATTENDANCEUncheckedCreateNestedManyWithoutStudentInput
   payments?: Prisma.PAYMENTUncheckedCreateNestedManyWithoutStudentInput
   sessions?: Prisma.SESSIONUncheckedCreateNestedManyWithoutStudentInput
+  groups?: Prisma.GROUPUncheckedCreateNestedManyWithoutStudentsInput
 }
 
 export type STUDENTUpdateInput = {
@@ -468,10 +468,10 @@ export type STUDENTUpdateInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  groups?: Prisma.GROUPUpdateManyWithoutStudentsNestedInput
   attendances?: Prisma.ATTENDANCEUpdateManyWithoutStudentNestedInput
   payments?: Prisma.PAYMENTUpdateManyWithoutStudentNestedInput
   sessions?: Prisma.SESSIONUpdateManyWithoutStudentNestedInput
+  groups?: Prisma.GROUPUpdateManyWithoutStudentsNestedInput
 }
 
 export type STUDENTUncheckedUpdateInput = {
@@ -491,10 +491,10 @@ export type STUDENTUncheckedUpdateInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  groups?: Prisma.GROUPUncheckedUpdateManyWithoutStudentsNestedInput
   attendances?: Prisma.ATTENDANCEUncheckedUpdateManyWithoutStudentNestedInput
   payments?: Prisma.PAYMENTUncheckedUpdateManyWithoutStudentNestedInput
   sessions?: Prisma.SESSIONUncheckedUpdateManyWithoutStudentNestedInput
+  groups?: Prisma.GROUPUncheckedUpdateManyWithoutStudentsNestedInput
 }
 
 export type STUDENTCreateManyInput = {
@@ -770,9 +770,9 @@ export type STUDENTCreateWithoutSessionsInput = {
   refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  groups?: Prisma.GROUPCreateNestedManyWithoutStudentsInput
   attendances?: Prisma.ATTENDANCECreateNestedManyWithoutStudentInput
   payments?: Prisma.PAYMENTCreateNestedManyWithoutStudentInput
+  groups?: Prisma.GROUPCreateNestedManyWithoutStudentsInput
 }
 
 export type STUDENTUncheckedCreateWithoutSessionsInput = {
@@ -792,9 +792,9 @@ export type STUDENTUncheckedCreateWithoutSessionsInput = {
   refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  groups?: Prisma.GROUPUncheckedCreateNestedManyWithoutStudentsInput
   attendances?: Prisma.ATTENDANCEUncheckedCreateNestedManyWithoutStudentInput
   payments?: Prisma.PAYMENTUncheckedCreateNestedManyWithoutStudentInput
+  groups?: Prisma.GROUPUncheckedCreateNestedManyWithoutStudentsInput
 }
 
 export type STUDENTCreateOrConnectWithoutSessionsInput = {
@@ -830,9 +830,9 @@ export type STUDENTUpdateWithoutSessionsInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  groups?: Prisma.GROUPUpdateManyWithoutStudentsNestedInput
   attendances?: Prisma.ATTENDANCEUpdateManyWithoutStudentNestedInput
   payments?: Prisma.PAYMENTUpdateManyWithoutStudentNestedInput
+  groups?: Prisma.GROUPUpdateManyWithoutStudentsNestedInput
 }
 
 export type STUDENTUncheckedUpdateWithoutSessionsInput = {
@@ -852,9 +852,9 @@ export type STUDENTUncheckedUpdateWithoutSessionsInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  groups?: Prisma.GROUPUncheckedUpdateManyWithoutStudentsNestedInput
   attendances?: Prisma.ATTENDANCEUncheckedUpdateManyWithoutStudentNestedInput
   payments?: Prisma.PAYMENTUncheckedUpdateManyWithoutStudentNestedInput
+  groups?: Prisma.GROUPUncheckedUpdateManyWithoutStudentsNestedInput
 }
 
 export type STUDENTCreateWithoutGroupsInput = {
@@ -961,9 +961,9 @@ export type STUDENTCreateWithoutAttendancesInput = {
   refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  groups?: Prisma.GROUPCreateNestedManyWithoutStudentsInput
   payments?: Prisma.PAYMENTCreateNestedManyWithoutStudentInput
   sessions?: Prisma.SESSIONCreateNestedManyWithoutStudentInput
+  groups?: Prisma.GROUPCreateNestedManyWithoutStudentsInput
 }
 
 export type STUDENTUncheckedCreateWithoutAttendancesInput = {
@@ -983,9 +983,9 @@ export type STUDENTUncheckedCreateWithoutAttendancesInput = {
   refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  groups?: Prisma.GROUPUncheckedCreateNestedManyWithoutStudentsInput
   payments?: Prisma.PAYMENTUncheckedCreateNestedManyWithoutStudentInput
   sessions?: Prisma.SESSIONUncheckedCreateNestedManyWithoutStudentInput
+  groups?: Prisma.GROUPUncheckedCreateNestedManyWithoutStudentsInput
 }
 
 export type STUDENTCreateOrConnectWithoutAttendancesInput = {
@@ -1021,9 +1021,9 @@ export type STUDENTUpdateWithoutAttendancesInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  groups?: Prisma.GROUPUpdateManyWithoutStudentsNestedInput
   payments?: Prisma.PAYMENTUpdateManyWithoutStudentNestedInput
   sessions?: Prisma.SESSIONUpdateManyWithoutStudentNestedInput
+  groups?: Prisma.GROUPUpdateManyWithoutStudentsNestedInput
 }
 
 export type STUDENTUncheckedUpdateWithoutAttendancesInput = {
@@ -1043,9 +1043,9 @@ export type STUDENTUncheckedUpdateWithoutAttendancesInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  groups?: Prisma.GROUPUncheckedUpdateManyWithoutStudentsNestedInput
   payments?: Prisma.PAYMENTUncheckedUpdateManyWithoutStudentNestedInput
   sessions?: Prisma.SESSIONUncheckedUpdateManyWithoutStudentNestedInput
+  groups?: Prisma.GROUPUncheckedUpdateManyWithoutStudentsNestedInput
 }
 
 export type STUDENTCreateWithoutPaymentsInput = {
@@ -1065,9 +1065,9 @@ export type STUDENTCreateWithoutPaymentsInput = {
   refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  groups?: Prisma.GROUPCreateNestedManyWithoutStudentsInput
   attendances?: Prisma.ATTENDANCECreateNestedManyWithoutStudentInput
   sessions?: Prisma.SESSIONCreateNestedManyWithoutStudentInput
+  groups?: Prisma.GROUPCreateNestedManyWithoutStudentsInput
 }
 
 export type STUDENTUncheckedCreateWithoutPaymentsInput = {
@@ -1087,9 +1087,9 @@ export type STUDENTUncheckedCreateWithoutPaymentsInput = {
   refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  groups?: Prisma.GROUPUncheckedCreateNestedManyWithoutStudentsInput
   attendances?: Prisma.ATTENDANCEUncheckedCreateNestedManyWithoutStudentInput
   sessions?: Prisma.SESSIONUncheckedCreateNestedManyWithoutStudentInput
+  groups?: Prisma.GROUPUncheckedCreateNestedManyWithoutStudentsInput
 }
 
 export type STUDENTCreateOrConnectWithoutPaymentsInput = {
@@ -1125,9 +1125,9 @@ export type STUDENTUpdateWithoutPaymentsInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  groups?: Prisma.GROUPUpdateManyWithoutStudentsNestedInput
   attendances?: Prisma.ATTENDANCEUpdateManyWithoutStudentNestedInput
   sessions?: Prisma.SESSIONUpdateManyWithoutStudentNestedInput
+  groups?: Prisma.GROUPUpdateManyWithoutStudentsNestedInput
 }
 
 export type STUDENTUncheckedUpdateWithoutPaymentsInput = {
@@ -1147,9 +1147,9 @@ export type STUDENTUncheckedUpdateWithoutPaymentsInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  groups?: Prisma.GROUPUncheckedUpdateManyWithoutStudentsNestedInput
   attendances?: Prisma.ATTENDANCEUncheckedUpdateManyWithoutStudentNestedInput
   sessions?: Prisma.SESSIONUncheckedUpdateManyWithoutStudentNestedInput
+  groups?: Prisma.GROUPUncheckedUpdateManyWithoutStudentsNestedInput
 }
 
 export type STUDENTUpdateWithoutGroupsInput = {
@@ -1221,17 +1221,17 @@ export type STUDENTUncheckedUpdateManyWithoutGroupsInput = {
  */
 
 export type STUDENTCountOutputType = {
-  groups: number
   attendances: number
   payments: number
   sessions: number
+  groups: number
 }
 
 export type STUDENTCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  groups?: boolean | STUDENTCountOutputTypeCountGroupsArgs
   attendances?: boolean | STUDENTCountOutputTypeCountAttendancesArgs
   payments?: boolean | STUDENTCountOutputTypeCountPaymentsArgs
   sessions?: boolean | STUDENTCountOutputTypeCountSessionsArgs
+  groups?: boolean | STUDENTCountOutputTypeCountGroupsArgs
 }
 
 /**
@@ -1242,13 +1242,6 @@ export type STUDENTCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
    * Select specific fields to fetch from the STUDENTCountOutputType
    */
   select?: Prisma.STUDENTCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * STUDENTCountOutputType without action
- */
-export type STUDENTCountOutputTypeCountGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.GROUPWhereInput
 }
 
 /**
@@ -1272,6 +1265,13 @@ export type STUDENTCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Type
   where?: Prisma.SESSIONWhereInput
 }
 
+/**
+ * STUDENTCountOutputType without action
+ */
+export type STUDENTCountOutputTypeCountGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GROUPWhereInput
+}
+
 
 export type STUDENTSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1290,10 +1290,10 @@ export type STUDENTSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   refreshToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  groups?: boolean | Prisma.STUDENT$groupsArgs<ExtArgs>
   attendances?: boolean | Prisma.STUDENT$attendancesArgs<ExtArgs>
   payments?: boolean | Prisma.STUDENT$paymentsArgs<ExtArgs>
   sessions?: boolean | Prisma.STUDENT$sessionsArgs<ExtArgs>
+  groups?: boolean | Prisma.STUDENT$groupsArgs<ExtArgs>
   _count?: boolean | Prisma.STUDENTCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sTUDENT"]>
 
@@ -1356,10 +1356,10 @@ export type STUDENTSelectScalar = {
 
 export type STUDENTOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "password" | "phoneNumber" | "parentsPhoneNumber" | "avatar" | "balance" | "role" | "isVerified" | "otpCode" | "otpExpires" | "refreshToken" | "createdAt" | "updatedAt", ExtArgs["result"]["sTUDENT"]>
 export type STUDENTInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  groups?: boolean | Prisma.STUDENT$groupsArgs<ExtArgs>
   attendances?: boolean | Prisma.STUDENT$attendancesArgs<ExtArgs>
   payments?: boolean | Prisma.STUDENT$paymentsArgs<ExtArgs>
   sessions?: boolean | Prisma.STUDENT$sessionsArgs<ExtArgs>
+  groups?: boolean | Prisma.STUDENT$groupsArgs<ExtArgs>
   _count?: boolean | Prisma.STUDENTCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type STUDENTIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1368,10 +1368,10 @@ export type STUDENTIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type $STUDENTPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "STUDENT"
   objects: {
-    groups: Prisma.$GROUPPayload<ExtArgs>[]
     attendances: Prisma.$ATTENDANCEPayload<ExtArgs>[]
     payments: Prisma.$PAYMENTPayload<ExtArgs>[]
     sessions: Prisma.$SESSIONPayload<ExtArgs>[]
+    groups: Prisma.$GROUPPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1784,10 +1784,10 @@ readonly fields: STUDENTFieldRefs;
  */
 export interface Prisma__STUDENTClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  groups<T extends Prisma.STUDENT$groupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.STUDENT$groupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GROUPPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendances<T extends Prisma.STUDENT$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.STUDENT$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ATTENDANCEPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.STUDENT$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.STUDENT$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PAYMENTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.STUDENT$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.STUDENT$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SESSIONPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  groups<T extends Prisma.STUDENT$groupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.STUDENT$groupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GROUPPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2224,30 +2224,6 @@ export type STUDENTDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * STUDENT.groups
- */
-export type STUDENT$groupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the GROUP
-   */
-  select?: Prisma.GROUPSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the GROUP
-   */
-  omit?: Prisma.GROUPOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.GROUPInclude<ExtArgs> | null
-  where?: Prisma.GROUPWhereInput
-  orderBy?: Prisma.GROUPOrderByWithRelationInput | Prisma.GROUPOrderByWithRelationInput[]
-  cursor?: Prisma.GROUPWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.GROUPScalarFieldEnum | Prisma.GROUPScalarFieldEnum[]
-}
-
-/**
  * STUDENT.attendances
  */
 export type STUDENT$attendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2317,6 +2293,30 @@ export type STUDENT$sessionsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.SESSIONScalarFieldEnum | Prisma.SESSIONScalarFieldEnum[]
+}
+
+/**
+ * STUDENT.groups
+ */
+export type STUDENT$groupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GROUP
+   */
+  select?: Prisma.GROUPSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GROUP
+   */
+  omit?: Prisma.GROUPOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GROUPInclude<ExtArgs> | null
+  where?: Prisma.GROUPWhereInput
+  orderBy?: Prisma.GROUPOrderByWithRelationInput | Prisma.GROUPOrderByWithRelationInput[]
+  cursor?: Prisma.GROUPWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GROUPScalarFieldEnum | Prisma.GROUPScalarFieldEnum[]
 }
 
 /**

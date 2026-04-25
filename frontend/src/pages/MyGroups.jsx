@@ -202,8 +202,10 @@ export default function MyGroups() {
                       <CalendarDays size={18} color="#94a3b8" />
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Dars Kunlari</div>
-                      <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#e2e8f0' }}>{g.days || "Belgilanmagan"}</div>
+                      <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Dars Kunlari & Vaqti</div>
+                      <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#e2e8f0' }}>
+                        {g.days || "Belgilanmagan"} {g.startTime ? ` | ${g.startTime}` : ''}{g.endTime ? ` - ${g.endTime}` : ''}
+                      </div>
                     </div>
                   </div>
                 </div>

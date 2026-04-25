@@ -224,8 +224,8 @@ export type ATTENDANCEWhereInput = {
   groupId?: Prisma.StringFilter<"ATTENDANCE"> | string
   studentId?: Prisma.StringFilter<"ATTENDANCE"> | string
   updatedAt?: Prisma.DateTimeFilter<"ATTENDANCE"> | Date | string
-  group?: Prisma.XOR<Prisma.GROUPScalarRelationFilter, Prisma.GROUPWhereInput>
   student?: Prisma.XOR<Prisma.STUDENTScalarRelationFilter, Prisma.STUDENTWhereInput>
+  group?: Prisma.XOR<Prisma.GROUPScalarRelationFilter, Prisma.GROUPWhereInput>
 }
 
 export type ATTENDANCEOrderByWithRelationInput = {
@@ -235,8 +235,8 @@ export type ATTENDANCEOrderByWithRelationInput = {
   groupId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  group?: Prisma.GROUPOrderByWithRelationInput
   student?: Prisma.STUDENTOrderByWithRelationInput
+  group?: Prisma.GROUPOrderByWithRelationInput
 }
 
 export type ATTENDANCEWhereUniqueInput = Prisma.AtLeast<{
@@ -249,8 +249,8 @@ export type ATTENDANCEWhereUniqueInput = Prisma.AtLeast<{
   groupId?: Prisma.StringFilter<"ATTENDANCE"> | string
   studentId?: Prisma.StringFilter<"ATTENDANCE"> | string
   updatedAt?: Prisma.DateTimeFilter<"ATTENDANCE"> | Date | string
-  group?: Prisma.XOR<Prisma.GROUPScalarRelationFilter, Prisma.GROUPWhereInput>
   student?: Prisma.XOR<Prisma.STUDENTScalarRelationFilter, Prisma.STUDENTWhereInput>
+  group?: Prisma.XOR<Prisma.GROUPScalarRelationFilter, Prisma.GROUPWhereInput>
 }, "id">
 
 export type ATTENDANCEOrderByWithAggregationInput = {
@@ -283,8 +283,8 @@ export type ATTENDANCECreateInput = {
   date?: Date | string
   status: $Enums.AttendanceStatus
   updatedAt?: Date | string
-  group: Prisma.GROUPCreateNestedOneWithoutAttendancesInput
   student: Prisma.STUDENTCreateNestedOneWithoutAttendancesInput
+  group: Prisma.GROUPCreateNestedOneWithoutAttendancesInput
 }
 
 export type ATTENDANCEUncheckedCreateInput = {
@@ -300,8 +300,8 @@ export type ATTENDANCEUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  group?: Prisma.GROUPUpdateOneRequiredWithoutAttendancesNestedInput
   student?: Prisma.STUDENTUpdateOneRequiredWithoutAttendancesNestedInput
+  group?: Prisma.GROUPUpdateOneRequiredWithoutAttendancesNestedInput
 }
 
 export type ATTENDANCEUncheckedUpdateInput = {
@@ -633,8 +633,8 @@ export type ATTENDANCESelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   groupId?: boolean
   studentId?: boolean
   updatedAt?: boolean
-  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
   student?: boolean | Prisma.STUDENTDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aTTENDANCE"]>
 
 export type ATTENDANCESelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -644,8 +644,8 @@ export type ATTENDANCESelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   groupId?: boolean
   studentId?: boolean
   updatedAt?: boolean
-  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
   student?: boolean | Prisma.STUDENTDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aTTENDANCE"]>
 
 export type ATTENDANCESelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -655,8 +655,8 @@ export type ATTENDANCESelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   groupId?: boolean
   studentId?: boolean
   updatedAt?: boolean
-  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
   student?: boolean | Prisma.STUDENTDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aTTENDANCE"]>
 
 export type ATTENDANCESelectScalar = {
@@ -670,23 +670,23 @@ export type ATTENDANCESelectScalar = {
 
 export type ATTENDANCEOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "status" | "groupId" | "studentId" | "updatedAt", ExtArgs["result"]["aTTENDANCE"]>
 export type ATTENDANCEInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
   student?: boolean | Prisma.STUDENTDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
 }
 export type ATTENDANCEIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
   student?: boolean | Prisma.STUDENTDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
 }
 export type ATTENDANCEIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
   student?: boolean | Prisma.STUDENTDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.GROUPDefaultArgs<ExtArgs>
 }
 
 export type $ATTENDANCEPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ATTENDANCE"
   objects: {
-    group: Prisma.$GROUPPayload<ExtArgs>
     student: Prisma.$STUDENTPayload<ExtArgs>
+    group: Prisma.$GROUPPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1089,8 +1089,8 @@ readonly fields: ATTENDANCEFieldRefs;
  */
 export interface Prisma__ATTENDANCEClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  group<T extends Prisma.GROUPDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GROUPDefaultArgs<ExtArgs>>): Prisma.Prisma__GROUPClient<runtime.Types.Result.GetResult<Prisma.$GROUPPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   student<T extends Prisma.STUDENTDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.STUDENTDefaultArgs<ExtArgs>>): Prisma.Prisma__STUDENTClient<runtime.Types.Result.GetResult<Prisma.$STUDENTPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  group<T extends Prisma.GROUPDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GROUPDefaultArgs<ExtArgs>>): Prisma.Prisma__GROUPClient<runtime.Types.Result.GetResult<Prisma.$GROUPPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

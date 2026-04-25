@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsString,
   IsUUID,
+  IsOptional,
 } from 'class-validator';
 import { CourseType } from 'src/generated/prisma/enums';
 
@@ -30,9 +31,21 @@ export class CreateGroupDto {
 
   @ApiProperty({ example: '1,3,5' })
   @IsString()
-  days: string;
+  @IsOptional()
+  days?: string;
+
+  @ApiProperty({ example: '14:00' })
+  @IsString()
+  @IsOptional()
+  startTime?: string;
+
+  @ApiProperty({ example: '16:00' })
+  @IsString()
+  @IsOptional()
+  endTime?: string;
 
   @ApiProperty({ example: 'Teacher`s UUID' })
   @IsUUID()
+  @IsOptional()
   teacherId?: string;
 }

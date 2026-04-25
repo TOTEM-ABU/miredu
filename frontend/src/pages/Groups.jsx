@@ -2,13 +2,19 @@ import React, { useState, useEffect } from 'react';
 import {
   Plus, Search, MoreVertical, Loader2, Users, BookOpen,
   DollarSign, Mail, Lock, Phone, Camera, X, Edit, Trash2,
-  ChevronRight, Filter, Info, UserPlus
+  ChevronRight, Filter, Info, UserPlus, CalendarDays, Clock
 } from 'lucide-react';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const COURSE_TYPES = ['English', 'Math'];
+
+const DAY_NAMES = { '0': 'Yak', '1': 'Du', '2': 'Se', '3': 'Chor', '4': 'Pay', '5': 'Ju', '6': 'Sha' };
+const formatDays = (days) => {
+  if (!days) return null;
+  return days.split(',').map(d => DAY_NAMES[d.trim()] || d).join(', ');
+};
 
 const KEYFRAMES = `
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -245,9 +251,24 @@ function GroupCard({ group, isAdmin, onEdit, onDelete, onAssign }) {
       </div>
 
       <h3 style={{ fontSize: '1.4rem', fontWeight: 900, marginBottom: '0.5rem', color: '#f1f5f9' }}>{group.name}</h3>
-      <p style={{ fontSize: '0.875rem', color: '#64748b', fontWeight: 500, marginBottom: '1.5rem', lineHeight: '1.5' }}>
+      <p style={{ fontSize: '0.875rem', color: '#64748b', fontWeight: 500, marginBottom: '1.25rem', lineHeight: '1.5' }}>
         {group.description || 'Ushbu guruh uchun tavsif mavjud emas.'}
       </p>
+
+      {/* Days Info — MyGroups stilida */}
+      {(group.days || group.startTime || group.endTime) && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(255,255,255,0.02)', padding: '0.75rem 1rem', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.02)', marginBottom: '1rem' }}>
+          <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(245,158,11,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <CalendarDays size={16} color="#fbbf24" />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Vaqti</div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#fbbf24' }}>
+              {formatDays(group.days)} {group.startTime ? `| ${group.startTime}` : ''}{group.endTime ? ` - ${group.endTime}` : ''}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
         <div style={{ background: 'rgba(255,255,255,0.02)', padding: '0.75rem', borderRadius: '0.85rem' }}>
@@ -457,7 +478,7 @@ function AssignStudentModal({ isOpen, onClose, onSuccess, group }) {
 function GroupModal({ isOpen, onClose, onSuccess, editingGroup, teachers }) {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    name: '', courseType: 'English', price: '', description: '', teacherId: '', days: '1,3,5'
+    name: '', courseType: 'English', price: '', description: '', teacherId: '', days: '1,3,5', startTime: '', endTime: ''
   });
 
   useEffect(() => {
@@ -468,10 +489,12 @@ function GroupModal({ isOpen, onClose, onSuccess, editingGroup, teachers }) {
         price: editingGroup.price.toString(),
         description: editingGroup.description || '',
         teacherId: editingGroup.teacherId || '',
-        days: editingGroup.days || '1,3,5'
+        days: editingGroup.days || '1,3,5',
+        startTime: editingGroup.startTime || '',
+        endTime: editingGroup.endTime || ''
       });
     } else {
-      setForm({ name: '', courseType: 'English', price: '', description: '', teacherId: '', days: '1,3,5' });
+      setForm({ name: '', courseType: 'English', price: '', description: '', teacherId: '', days: '1,3,5', startTime: '', endTime: '' });
     }
   }, [editingGroup, isOpen]);
 
@@ -578,7 +601,7 @@ function GroupModal({ isOpen, onClose, onSuccess, editingGroup, teachers }) {
                 {/* Day Selector */}
                 <div className="field-group">
                   <label className="field-label">Dars Kunlari</label>
-                  <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
                     {[
                       { id: '1', label: 'Du' }, { id: '2', label: 'Se' },
                       { id: '3', label: 'Chor' }, { id: '4', label: 'Pay' },
@@ -596,17 +619,46 @@ function GroupModal({ isOpen, onClose, onSuccess, editingGroup, teachers }) {
                             setForm({ ...form, days: next.sort().join(',') });
                           }}
                           style={{
-                            padding: '0.5rem 0.8rem', borderRadius: '0.6rem', border: '1px solid',
+                            flex: 1, padding: '0.6rem 0', borderRadius: '0.6rem', border: '1px solid',
                             background: isActive ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
                             color: isActive ? '#fff' : '#64748b',
                             borderColor: isActive ? 'var(--primary)' : 'rgba(255,255,255,0.08)',
-                            fontSize: '0.75rem', fontWeight: 800, cursor: 'pointer', transition: 'all 0.2s'
+                            fontSize: '0.75rem', fontWeight: 800, cursor: 'pointer', transition: 'all 0.2s',
+                            textAlign: 'center'
                           }}
                         >
                           {day.label}
                         </button>
                       );
                     })}
+                  </div>
+                </div>
+
+                {/* Time Inputs */}
+                <div className="field-group">
+                  <label className="field-label">Dars Vaqti (Boshlanish — Tugash)</label>
+                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <div className="field-wrap" style={{ flex: 1 }}>
+                      <Clock className="field-icon" size={17} />
+                      <input 
+                        name="startTime" 
+                        type="time" 
+                        value={form.startTime} 
+                        onChange={onChange} 
+                        className="field-input" 
+                      />
+                    </div>
+                    <span style={{ color: '#475569', fontWeight: 900 }}>—</span>
+                    <div className="field-wrap" style={{ flex: 1 }}>
+                      <Clock className="field-icon" size={17} />
+                      <input 
+                        name="endTime" 
+                        type="time" 
+                        value={form.endTime} 
+                        onChange={onChange} 
+                        className="field-input" 
+                      />
+                    </div>
                   </div>
                 </div>
 

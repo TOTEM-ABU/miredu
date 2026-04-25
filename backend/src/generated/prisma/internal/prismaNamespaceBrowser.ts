@@ -152,6 +152,8 @@ export const GROUPScalarFieldEnum = {
   courseType: 'courseType',
   price: 'price',
   days: 'days',
+  startTime: 'startTime',
+  endTime: 'endTime',
   students_count: 'students_count',
   teacherId: 'teacherId',
   createdAt: 'createdAt',

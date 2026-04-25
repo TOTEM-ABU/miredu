@@ -7,6 +7,114 @@ datasource db {
   provider = "sqlite"
 }
 
+model STUDENT {
+  id                 String       @id @default(uuid())
+  firstName          String
+  lastName           String
+  email              String       @unique
+  password           String
+  phoneNumber        String       @unique
+  parentsPhoneNumber String       @unique
+  avatar             String
+  balance            Int          @default(0)
+  role               RoleType     @default(STUDENT)
+  isVerified         Boolean      @default(false)
+  otpCode            String?
+  otpExpires         DateTime?
+  refreshToken       String?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  attendances        ATTENDANCE[]
+  payments           PAYMENT[]
+  sessions           SESSION[]
+  groups             GROUP[]      @relation("GROUPToSTUDENT")
+}
+
+model TEACHER {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  password     String
+  phoneNumber  String    @unique
+  avatar       String
+  role         RoleType  @default(TEACHER)
+  isVerified   Boolean   @default(false)
+  otpCode      String?
+  otpExpires   DateTime?
+  refreshToken String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  groups       GROUP[]
+}
+
+model ADMIN {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  password     String
+  avatar       String
+  role         RoleType  @default(ADMIN)
+  isVerified   Boolean   @default(false)
+  otpCode      String?
+  otpExpires   DateTime?
+  refreshToken String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model SESSION {
+  id         String   @id @default(uuid())
+  ipAddress  String
+  deviceInfo String
+  token      String
+  expiresAt  DateTime
+  studentId  String?
+  createdAt  DateTime @default(now())
+  Student    STUDENT? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model GROUP {
+  id             String       @id @default(uuid())
+  name           String       @unique
+  description    String?
+  courseType     CourseType
+  price          Int
+  days           String?      @default("")
+  startTime      String?      @default("")
+  endTime        String?      @default("")
+  students_count Int          @default(0)
+  teacherId      String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  attendances    ATTENDANCE[]
+  teacher        TEACHER?     @relation(fields: [teacherId], references: [id])
+  students       STUDENT[]    @relation("GROUPToSTUDENT")
+}
+
+model ATTENDANCE {
+  id        Int              @id @default(autoincrement())
+  date      DateTime         @default(now())
+  status    AttendanceStatus
+  groupId   String
+  studentId String
+  updatedAt DateTime         @updatedAt
+  student   STUDENT          @relation(fields: [studentId], references: [id])
+  group     GROUP            @relation(fields: [groupId], references: [id])
+
+  @@index([date, groupId, studentId])
+}
+
+model PAYMENT {
+  id          Int           @id @default(autoincrement())
+  amount      Int
+  date        DateTime      @default(now())
+  status      PaymentStatus @default(PENDING)
+  paymentType PaymentType
+  studentId   String
+  updatedAt   DateTime      @updatedAt
+  student     STUDENT       @relation(fields: [studentId], references: [id])
+}
+
 enum RoleType {
   ADMIN
   TEACHER
@@ -33,123 +141,4 @@ enum PaymentStatus {
 enum PaymentType {
   CASH
   CARD
-}
-
-model STUDENT {
-  id                 String   @id @default(uuid())
-  firstName          String
-  lastName           String
-  email              String   @unique
-  password           String
-  phoneNumber        String   @unique
-  parentsPhoneNumber String   @unique
-  avatar             String
-  balance            Int      @default(0)
-  role               RoleType @default(STUDENT)
-  isVerified         Boolean  @default(false)
-  otpCode            String?
-  otpExpires         DateTime?
-  refreshToken       String?
-
-  groups      GROUP[]
-  attendances ATTENDANCE[]
-  payments    PAYMENT[]
-  sessions    SESSION[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model TEACHER {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  password     String
-  phoneNumber  String   @unique
-  avatar       String
-  role         RoleType @default(TEACHER)
-  isVerified   Boolean  @default(false)
-  otpCode      String?
-  otpExpires   DateTime?
-  refreshToken String?
-
-  groups GROUP[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ADMIN {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  password     String
-  avatar       String
-  role         RoleType @default(ADMIN)
-  isVerified   Boolean  @default(false)
-  otpCode      String?
-  otpExpires   DateTime?
-  refreshToken String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model SESSION {
-  id         String   @id @default(uuid())
-  ipAddress  String
-  deviceInfo String
-  token      String
-  expiresAt  DateTime
-
-  studentId String?
-  Student   STUDENT? @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-}
-
-model GROUP {
-  id             String     @id @default(uuid())
-  name           String     @unique
-  description    String?
-  courseType     CourseType
-  price          Int  
-  days           String?    @default("")
-  students_count Int        @default(0)
-
-  students    STUDENT[]
-  attendances ATTENDANCE[]
-  teacher     TEACHER?     @relation(fields: [teacherId], references: [id])
-  teacherId   String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ATTENDANCE {
-  id     Int              @id @default(autoincrement())
-  date   DateTime         @default(now())
-  status AttendanceStatus
-
-  group     GROUP   @relation(fields: [groupId], references: [id])
-  groupId   String
-  student   STUDENT @relation(fields: [studentId], references: [id])
-  studentId String
-
-  updatedAt DateTime @updatedAt
-
-  @@index([date, groupId, studentId])
-}
-
-model PAYMENT {
-  id          Int           @id @default(autoincrement())
-  amount      Int
-  date        DateTime      @default(now())
-  status      PaymentStatus @default(PENDING)
-  paymentType PaymentType
-
-  student   STUDENT @relation(fields: [studentId], references: [id])
-  studentId String
-
-  updatedAt DateTime @updatedAt
 }

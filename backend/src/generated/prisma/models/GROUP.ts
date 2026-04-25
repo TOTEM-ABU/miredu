@@ -43,6 +43,8 @@ export type GROUPMinAggregateOutputType = {
   courseType: $Enums.CourseType | null
   price: number | null
   days: string | null
+  startTime: string | null
+  endTime: string | null
   students_count: number | null
   teacherId: string | null
   createdAt: Date | null
@@ -56,6 +58,8 @@ export type GROUPMaxAggregateOutputType = {
   courseType: $Enums.CourseType | null
   price: number | null
   days: string | null
+  startTime: string | null
+  endTime: string | null
   students_count: number | null
   teacherId: string | null
   createdAt: Date | null
@@ -69,6 +73,8 @@ export type GROUPCountAggregateOutputType = {
   courseType: number
   price: number
   days: number
+  startTime: number
+  endTime: number
   students_count: number
   teacherId: number
   createdAt: number
@@ -94,6 +100,8 @@ export type GROUPMinAggregateInputType = {
   courseType?: true
   price?: true
   days?: true
+  startTime?: true
+  endTime?: true
   students_count?: true
   teacherId?: true
   createdAt?: true
@@ -107,6 +115,8 @@ export type GROUPMaxAggregateInputType = {
   courseType?: true
   price?: true
   days?: true
+  startTime?: true
+  endTime?: true
   students_count?: true
   teacherId?: true
   createdAt?: true
@@ -120,6 +130,8 @@ export type GROUPCountAggregateInputType = {
   courseType?: true
   price?: true
   days?: true
+  startTime?: true
+  endTime?: true
   students_count?: true
   teacherId?: true
   createdAt?: true
@@ -220,6 +232,8 @@ export type GROUPGroupByOutputType = {
   courseType: $Enums.CourseType
   price: number
   days: string | null
+  startTime: string | null
+  endTime: string | null
   students_count: number
   teacherId: string | null
   createdAt: Date
@@ -256,13 +270,15 @@ export type GROUPWhereInput = {
   courseType?: Prisma.EnumCourseTypeFilter<"GROUP"> | $Enums.CourseType
   price?: Prisma.IntFilter<"GROUP"> | number
   days?: Prisma.StringNullableFilter<"GROUP"> | string | null
+  startTime?: Prisma.StringNullableFilter<"GROUP"> | string | null
+  endTime?: Prisma.StringNullableFilter<"GROUP"> | string | null
   students_count?: Prisma.IntFilter<"GROUP"> | number
   teacherId?: Prisma.StringNullableFilter<"GROUP"> | string | null
   createdAt?: Prisma.DateTimeFilter<"GROUP"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"GROUP"> | Date | string
-  students?: Prisma.STUDENTListRelationFilter
   attendances?: Prisma.ATTENDANCEListRelationFilter
   teacher?: Prisma.XOR<Prisma.TEACHERNullableScalarRelationFilter, Prisma.TEACHERWhereInput> | null
+  students?: Prisma.STUDENTListRelationFilter
 }
 
 export type GROUPOrderByWithRelationInput = {
@@ -272,13 +288,15 @@ export type GROUPOrderByWithRelationInput = {
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   days?: Prisma.SortOrderInput | Prisma.SortOrder
+  startTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   students_count?: Prisma.SortOrder
   teacherId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  students?: Prisma.STUDENTOrderByRelationAggregateInput
   attendances?: Prisma.ATTENDANCEOrderByRelationAggregateInput
   teacher?: Prisma.TEACHEROrderByWithRelationInput
+  students?: Prisma.STUDENTOrderByRelationAggregateInput
 }
 
 export type GROUPWhereUniqueInput = Prisma.AtLeast<{
@@ -291,13 +309,15 @@ export type GROUPWhereUniqueInput = Prisma.AtLeast<{
   courseType?: Prisma.EnumCourseTypeFilter<"GROUP"> | $Enums.CourseType
   price?: Prisma.IntFilter<"GROUP"> | number
   days?: Prisma.StringNullableFilter<"GROUP"> | string | null
+  startTime?: Prisma.StringNullableFilter<"GROUP"> | string | null
+  endTime?: Prisma.StringNullableFilter<"GROUP"> | string | null
   students_count?: Prisma.IntFilter<"GROUP"> | number
   teacherId?: Prisma.StringNullableFilter<"GROUP"> | string | null
   createdAt?: Prisma.DateTimeFilter<"GROUP"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"GROUP"> | Date | string
-  students?: Prisma.STUDENTListRelationFilter
   attendances?: Prisma.ATTENDANCEListRelationFilter
   teacher?: Prisma.XOR<Prisma.TEACHERNullableScalarRelationFilter, Prisma.TEACHERWhereInput> | null
+  students?: Prisma.STUDENTListRelationFilter
 }, "id" | "name">
 
 export type GROUPOrderByWithAggregationInput = {
@@ -307,6 +327,8 @@ export type GROUPOrderByWithAggregationInput = {
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   days?: Prisma.SortOrderInput | Prisma.SortOrder
+  startTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   students_count?: Prisma.SortOrder
   teacherId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -328,6 +350,8 @@ export type GROUPScalarWhereWithAggregatesInput = {
   courseType?: Prisma.EnumCourseTypeWithAggregatesFilter<"GROUP"> | $Enums.CourseType
   price?: Prisma.IntWithAggregatesFilter<"GROUP"> | number
   days?: Prisma.StringNullableWithAggregatesFilter<"GROUP"> | string | null
+  startTime?: Prisma.StringNullableWithAggregatesFilter<"GROUP"> | string | null
+  endTime?: Prisma.StringNullableWithAggregatesFilter<"GROUP"> | string | null
   students_count?: Prisma.IntWithAggregatesFilter<"GROUP"> | number
   teacherId?: Prisma.StringNullableWithAggregatesFilter<"GROUP"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"GROUP"> | Date | string
@@ -341,12 +365,14 @@ export type GROUPCreateInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  students?: Prisma.STUDENTCreateNestedManyWithoutGroupsInput
   attendances?: Prisma.ATTENDANCECreateNestedManyWithoutGroupInput
   teacher?: Prisma.TEACHERCreateNestedOneWithoutGroupsInput
+  students?: Prisma.STUDENTCreateNestedManyWithoutGroupsInput
 }
 
 export type GROUPUncheckedCreateInput = {
@@ -356,12 +382,14 @@ export type GROUPUncheckedCreateInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   teacherId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  students?: Prisma.STUDENTUncheckedCreateNestedManyWithoutGroupsInput
   attendances?: Prisma.ATTENDANCEUncheckedCreateNestedManyWithoutGroupInput
+  students?: Prisma.STUDENTUncheckedCreateNestedManyWithoutGroupsInput
 }
 
 export type GROUPUpdateInput = {
@@ -371,12 +399,14 @@ export type GROUPUpdateInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  students?: Prisma.STUDENTUpdateManyWithoutGroupsNestedInput
   attendances?: Prisma.ATTENDANCEUpdateManyWithoutGroupNestedInput
   teacher?: Prisma.TEACHERUpdateOneWithoutGroupsNestedInput
+  students?: Prisma.STUDENTUpdateManyWithoutGroupsNestedInput
 }
 
 export type GROUPUncheckedUpdateInput = {
@@ -386,12 +416,14 @@ export type GROUPUncheckedUpdateInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  students?: Prisma.STUDENTUncheckedUpdateManyWithoutGroupsNestedInput
   attendances?: Prisma.ATTENDANCEUncheckedUpdateManyWithoutGroupNestedInput
+  students?: Prisma.STUDENTUncheckedUpdateManyWithoutGroupsNestedInput
 }
 
 export type GROUPCreateManyInput = {
@@ -401,6 +433,8 @@ export type GROUPCreateManyInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   teacherId?: string | null
   createdAt?: Date | string
@@ -414,6 +448,8 @@ export type GROUPUpdateManyMutationInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -426,6 +462,8 @@ export type GROUPUncheckedUpdateManyInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -449,6 +487,8 @@ export type GROUPCountOrderByAggregateInput = {
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   days?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  endTime?: Prisma.SortOrder
   students_count?: Prisma.SortOrder
   teacherId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -467,6 +507,8 @@ export type GROUPMaxOrderByAggregateInput = {
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   days?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  endTime?: Prisma.SortOrder
   students_count?: Prisma.SortOrder
   teacherId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -480,6 +522,8 @@ export type GROUPMinOrderByAggregateInput = {
   courseType?: Prisma.SortOrder
   price?: Prisma.SortOrder
   days?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  endTime?: Prisma.SortOrder
   students_count?: Prisma.SortOrder
   teacherId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -601,6 +645,8 @@ export type GROUPCreateWithoutStudentsInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -615,6 +661,8 @@ export type GROUPUncheckedCreateWithoutStudentsInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   teacherId?: string | null
   createdAt?: Date | string
@@ -653,6 +701,8 @@ export type GROUPScalarWhereInput = {
   courseType?: Prisma.EnumCourseTypeFilter<"GROUP"> | $Enums.CourseType
   price?: Prisma.IntFilter<"GROUP"> | number
   days?: Prisma.StringNullableFilter<"GROUP"> | string | null
+  startTime?: Prisma.StringNullableFilter<"GROUP"> | string | null
+  endTime?: Prisma.StringNullableFilter<"GROUP"> | string | null
   students_count?: Prisma.IntFilter<"GROUP"> | number
   teacherId?: Prisma.StringNullableFilter<"GROUP"> | string | null
   createdAt?: Prisma.DateTimeFilter<"GROUP"> | Date | string
@@ -666,11 +716,13 @@ export type GROUPCreateWithoutTeacherInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  students?: Prisma.STUDENTCreateNestedManyWithoutGroupsInput
   attendances?: Prisma.ATTENDANCECreateNestedManyWithoutGroupInput
+  students?: Prisma.STUDENTCreateNestedManyWithoutGroupsInput
 }
 
 export type GROUPUncheckedCreateWithoutTeacherInput = {
@@ -680,11 +732,13 @@ export type GROUPUncheckedCreateWithoutTeacherInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  students?: Prisma.STUDENTUncheckedCreateNestedManyWithoutGroupsInput
   attendances?: Prisma.ATTENDANCEUncheckedCreateNestedManyWithoutGroupInput
+  students?: Prisma.STUDENTUncheckedCreateNestedManyWithoutGroupsInput
 }
 
 export type GROUPCreateOrConnectWithoutTeacherInput = {
@@ -719,11 +773,13 @@ export type GROUPCreateWithoutAttendancesInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  students?: Prisma.STUDENTCreateNestedManyWithoutGroupsInput
   teacher?: Prisma.TEACHERCreateNestedOneWithoutGroupsInput
+  students?: Prisma.STUDENTCreateNestedManyWithoutGroupsInput
 }
 
 export type GROUPUncheckedCreateWithoutAttendancesInput = {
@@ -733,6 +789,8 @@ export type GROUPUncheckedCreateWithoutAttendancesInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   teacherId?: string | null
   createdAt?: Date | string
@@ -763,11 +821,13 @@ export type GROUPUpdateWithoutAttendancesInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  students?: Prisma.STUDENTUpdateManyWithoutGroupsNestedInput
   teacher?: Prisma.TEACHERUpdateOneWithoutGroupsNestedInput
+  students?: Prisma.STUDENTUpdateManyWithoutGroupsNestedInput
 }
 
 export type GROUPUncheckedUpdateWithoutAttendancesInput = {
@@ -777,6 +837,8 @@ export type GROUPUncheckedUpdateWithoutAttendancesInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -791,6 +853,8 @@ export type GROUPUpdateWithoutStudentsInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -805,6 +869,8 @@ export type GROUPUncheckedUpdateWithoutStudentsInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -819,6 +885,8 @@ export type GROUPUncheckedUpdateManyWithoutStudentsInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -832,6 +900,8 @@ export type GROUPCreateManyTeacherInput = {
   courseType: $Enums.CourseType
   price: number
   days?: string | null
+  startTime?: string | null
+  endTime?: string | null
   students_count?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -844,11 +914,13 @@ export type GROUPUpdateWithoutTeacherInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  students?: Prisma.STUDENTUpdateManyWithoutGroupsNestedInput
   attendances?: Prisma.ATTENDANCEUpdateManyWithoutGroupNestedInput
+  students?: Prisma.STUDENTUpdateManyWithoutGroupsNestedInput
 }
 
 export type GROUPUncheckedUpdateWithoutTeacherInput = {
@@ -858,11 +930,13 @@ export type GROUPUncheckedUpdateWithoutTeacherInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  students?: Prisma.STUDENTUncheckedUpdateManyWithoutGroupsNestedInput
   attendances?: Prisma.ATTENDANCEUncheckedUpdateManyWithoutGroupNestedInput
+  students?: Prisma.STUDENTUncheckedUpdateManyWithoutGroupsNestedInput
 }
 
 export type GROUPUncheckedUpdateManyWithoutTeacherInput = {
@@ -872,6 +946,8 @@ export type GROUPUncheckedUpdateManyWithoutTeacherInput = {
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   price?: Prisma.IntFieldUpdateOperationsInput | number
   days?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students_count?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -883,13 +959,13 @@ export type GROUPUncheckedUpdateManyWithoutTeacherInput = {
  */
 
 export type GROUPCountOutputType = {
-  students: number
   attendances: number
+  students: number
 }
 
 export type GROUPCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  students?: boolean | GROUPCountOutputTypeCountStudentsArgs
   attendances?: boolean | GROUPCountOutputTypeCountAttendancesArgs
+  students?: boolean | GROUPCountOutputTypeCountStudentsArgs
 }
 
 /**
@@ -905,15 +981,15 @@ export type GROUPCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
 /**
  * GROUPCountOutputType without action
  */
-export type GROUPCountOutputTypeCountStudentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.STUDENTWhereInput
+export type GROUPCountOutputTypeCountAttendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ATTENDANCEWhereInput
 }
 
 /**
  * GROUPCountOutputType without action
  */
-export type GROUPCountOutputTypeCountAttendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ATTENDANCEWhereInput
+export type GROUPCountOutputTypeCountStudentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.STUDENTWhereInput
 }
 
 
@@ -924,13 +1000,15 @@ export type GROUPSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   courseType?: boolean
   price?: boolean
   days?: boolean
+  startTime?: boolean
+  endTime?: boolean
   students_count?: boolean
   teacherId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  students?: boolean | Prisma.GROUP$studentsArgs<ExtArgs>
   attendances?: boolean | Prisma.GROUP$attendancesArgs<ExtArgs>
   teacher?: boolean | Prisma.GROUP$teacherArgs<ExtArgs>
+  students?: boolean | Prisma.GROUP$studentsArgs<ExtArgs>
   _count?: boolean | Prisma.GROUPCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["gROUP"]>
 
@@ -941,6 +1019,8 @@ export type GROUPSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   courseType?: boolean
   price?: boolean
   days?: boolean
+  startTime?: boolean
+  endTime?: boolean
   students_count?: boolean
   teacherId?: boolean
   createdAt?: boolean
@@ -955,6 +1035,8 @@ export type GROUPSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   courseType?: boolean
   price?: boolean
   days?: boolean
+  startTime?: boolean
+  endTime?: boolean
   students_count?: boolean
   teacherId?: boolean
   createdAt?: boolean
@@ -969,17 +1051,19 @@ export type GROUPSelectScalar = {
   courseType?: boolean
   price?: boolean
   days?: boolean
+  startTime?: boolean
+  endTime?: boolean
   students_count?: boolean
   teacherId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type GROUPOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "courseType" | "price" | "days" | "students_count" | "teacherId" | "createdAt" | "updatedAt", ExtArgs["result"]["gROUP"]>
+export type GROUPOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "courseType" | "price" | "days" | "startTime" | "endTime" | "students_count" | "teacherId" | "createdAt" | "updatedAt", ExtArgs["result"]["gROUP"]>
 export type GROUPInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  students?: boolean | Prisma.GROUP$studentsArgs<ExtArgs>
   attendances?: boolean | Prisma.GROUP$attendancesArgs<ExtArgs>
   teacher?: boolean | Prisma.GROUP$teacherArgs<ExtArgs>
+  students?: boolean | Prisma.GROUP$studentsArgs<ExtArgs>
   _count?: boolean | Prisma.GROUPCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GROUPIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -992,9 +1076,9 @@ export type GROUPIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $GROUPPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "GROUP"
   objects: {
-    students: Prisma.$STUDENTPayload<ExtArgs>[]
     attendances: Prisma.$ATTENDANCEPayload<ExtArgs>[]
     teacher: Prisma.$TEACHERPayload<ExtArgs> | null
+    students: Prisma.$STUDENTPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1003,6 +1087,8 @@ export type $GROUPPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     courseType: $Enums.CourseType
     price: number
     days: string | null
+    startTime: string | null
+    endTime: string | null
     students_count: number
     teacherId: string | null
     createdAt: Date
@@ -1401,9 +1487,9 @@ readonly fields: GROUPFieldRefs;
  */
 export interface Prisma__GROUPClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  students<T extends Prisma.GROUP$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GROUP$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$STUDENTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendances<T extends Prisma.GROUP$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GROUP$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ATTENDANCEPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   teacher<T extends Prisma.GROUP$teacherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GROUP$teacherArgs<ExtArgs>>): Prisma.Prisma__TEACHERClient<runtime.Types.Result.GetResult<Prisma.$TEACHERPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  students<T extends Prisma.GROUP$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GROUP$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$STUDENTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1439,6 +1525,8 @@ export interface GROUPFieldRefs {
   readonly courseType: Prisma.FieldRef<"GROUP", 'CourseType'>
   readonly price: Prisma.FieldRef<"GROUP", 'Int'>
   readonly days: Prisma.FieldRef<"GROUP", 'String'>
+  readonly startTime: Prisma.FieldRef<"GROUP", 'String'>
+  readonly endTime: Prisma.FieldRef<"GROUP", 'String'>
   readonly students_count: Prisma.FieldRef<"GROUP", 'Int'>
   readonly teacherId: Prisma.FieldRef<"GROUP", 'String'>
   readonly createdAt: Prisma.FieldRef<"GROUP", 'DateTime'>
@@ -1842,30 +1930,6 @@ export type GROUPDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * GROUP.students
- */
-export type GROUP$studentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the STUDENT
-   */
-  select?: Prisma.STUDENTSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the STUDENT
-   */
-  omit?: Prisma.STUDENTOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.STUDENTInclude<ExtArgs> | null
-  where?: Prisma.STUDENTWhereInput
-  orderBy?: Prisma.STUDENTOrderByWithRelationInput | Prisma.STUDENTOrderByWithRelationInput[]
-  cursor?: Prisma.STUDENTWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.STUDENTScalarFieldEnum | Prisma.STUDENTScalarFieldEnum[]
-}
-
-/**
  * GROUP.attendances
  */
 export type GROUP$attendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1906,6 +1970,30 @@ export type GROUP$teacherArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.TEACHERInclude<ExtArgs> | null
   where?: Prisma.TEACHERWhereInput
+}
+
+/**
+ * GROUP.students
+ */
+export type GROUP$studentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the STUDENT
+   */
+  select?: Prisma.STUDENTSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the STUDENT
+   */
+  omit?: Prisma.STUDENTOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.STUDENTInclude<ExtArgs> | null
+  where?: Prisma.STUDENTWhereInput
+  orderBy?: Prisma.STUDENTOrderByWithRelationInput | Prisma.STUDENTOrderByWithRelationInput[]
+  cursor?: Prisma.STUDENTWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.STUDENTScalarFieldEnum | Prisma.STUDENTScalarFieldEnum[]
 }
 
 /**
