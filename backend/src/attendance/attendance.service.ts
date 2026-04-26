@@ -73,7 +73,11 @@ export class AttendanceService {
     }
   }
 
-  async bulkCreate(data: { groupId: string; date: string; records: { studentId: string; status: any }[] }) {
+  async bulkCreate(data: {
+    groupId: string;
+    date: string;
+    records: { studentId: string; status: any }[];
+  }) {
     const results: any[] = [];
     for (const record of data.records) {
       const res = await this.create({

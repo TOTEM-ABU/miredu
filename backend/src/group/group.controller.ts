@@ -79,10 +79,9 @@ export class GroupController {
   @UseGuards(AuthGuard, RoleGuard)
   @Patch('addStudentToGroup')
   addStudentToGroup(@Body() data: AddStudentsToGroupDto) {
-    console.log("Adding student to group request received:", data);
+    console.log('Adding student to group request received:', data);
     return this.groupService.addStudentToGroup(data);
   }
-
 
   @Roles(RoleType.ADMIN, RoleType.TEACHER)
   @UseGuards(AuthGuard, RoleGuard)

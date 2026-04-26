@@ -35,18 +35,27 @@ export class DashboardService {
   async getChartData() {
     try {
       // Last 7 days attendance
-      const last7Days = Array.from({ length: 7 }, (_, i) => subDays(new Date(), i)).reverse();
-      
+      const last7Days = Array.from({ length: 7 }, (_, i) =>
+        subDays(new Date(), i),
+      ).reverse();
+
       const attendanceStats = await Promise.all(
         last7Days.map(async (date) => {
           const start = new Date(date).setHours(0, 0, 0, 0);
           const end = new Date(date).setHours(23, 59, 59, 999);
-          
+
           const [present, total] = await Promise.all([
-            this.prisma.aTTENDANCE.count({ where: { date: { gte: new Date(start), lt: new Date(end) }, status: 'PRESENT' } }),
-            this.prisma.aTTENDANCE.count({ where: { date: { gte: new Date(start), lt: new Date(end) } } }),
+            this.prisma.aTTENDANCE.count({
+              where: {
+                date: { gte: new Date(start), lt: new Date(end) },
+                status: 'PRESENT',
+              },
+            }),
+            this.prisma.aTTENDANCE.count({
+              where: { date: { gte: new Date(start), lt: new Date(end) } },
+            }),
           ]);
-          
+
           return {
             name: format(date, 'EEE'),
             percentage: total === 0 ? 0 : Math.round((present / total) * 100),
@@ -67,18 +76,23 @@ export class DashboardService {
         payments: paymentDynamics,
       };
     } catch (error) {
-      throw new InternalServerErrorException('Chart ma\'lumotlarini olishda xatolik!');
+      throw new InternalServerErrorException(
+        "Chart ma'lumotlarini olishda xatolik!",
+      );
     }
   }
 
   async getRecentActions() {
     try {
       const [recentStudents, recentPayments] = await Promise.all([
-        this.prisma.sTUDENT.findMany({ take: 5, orderBy: { createdAt: 'desc' } }),
-        this.prisma.pAYMENT.findMany({ 
-          take: 5, 
+        this.prisma.sTUDENT.findMany({
+          take: 5,
+          orderBy: { createdAt: 'desc' },
+        }),
+        this.prisma.pAYMENT.findMany({
+          take: 5,
           orderBy: { date: 'desc' },
-          include: { student: { select: { firstName: true, lastName: true } } }
+          include: { student: { select: { firstName: true, lastName: true } } },
         }),
       ]);
 

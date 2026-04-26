@@ -208,7 +208,9 @@ export class UserService {
       newUser = await this.prisma.sTUDENT.create({ data: studentData });
     } catch (error) {
       if (error instanceof HttpException) throw error;
-      throw new InternalServerErrorException('Failed to create student: ' + error.message);
+      throw new InternalServerErrorException(
+        'Failed to create student: ' + error.message,
+      );
     }
 
     // Send OTP email — do NOT block registration if mail fails
@@ -219,13 +221,15 @@ export class UserService {
         `Your OTP code is: ${otp}\n\nIt will expire in 5 minutes.`,
       );
     } catch (mailError) {
-      console.warn('[MailService] Failed to send OTP email:', mailError?.message);
+      console.warn(
+        '[MailService] Failed to send OTP email:',
+        mailError?.message,
+      );
       // Log but don't throw — user is already created
     }
 
     return newUser;
   }
-
 
   async registerTeacher(data: CreateTeacherDto) {
     const existingTeacher = await this.prisma.tEACHER.findFirst({
@@ -257,7 +261,9 @@ export class UserService {
       newUser = await this.prisma.tEACHER.create({ data: teacherData });
     } catch (error) {
       if (error instanceof HttpException) throw error;
-      throw new InternalServerErrorException('Failed to create teacher: ' + error.message);
+      throw new InternalServerErrorException(
+        'Failed to create teacher: ' + error.message,
+      );
     }
 
     try {
@@ -267,7 +273,10 @@ export class UserService {
         `Your OTP code is: ${otp}\n\nIt will expire in 5 minutes.`,
       );
     } catch (mailError) {
-      console.warn('[MailService] Failed to send OTP email:', mailError?.message);
+      console.warn(
+        '[MailService] Failed to send OTP email:',
+        mailError?.message,
+      );
     }
 
     return newUser;
@@ -302,7 +311,9 @@ export class UserService {
       newUser = await this.prisma.aDMIN.create({ data: adminData });
     } catch (error) {
       if (error instanceof HttpException) throw error;
-      throw new InternalServerErrorException('Failed to create admin: ' + error.message);
+      throw new InternalServerErrorException(
+        'Failed to create admin: ' + error.message,
+      );
     }
 
     try {
@@ -312,7 +323,10 @@ export class UserService {
         `Your OTP code is: ${otp}\n\nIt will expire in 5 minutes.`,
       );
     } catch (mailError) {
-      console.warn('[MailService] Failed to send OTP email:', mailError?.message);
+      console.warn(
+        '[MailService] Failed to send OTP email:',
+        mailError?.message,
+      );
     }
 
     return newUser;
@@ -352,10 +366,14 @@ export class UserService {
       if (user.isVerified) return { message: 'User already verified!' };
 
       if (new Date() > user.otpExpires) {
-        console.log(`[verifyOtp ${email}] OTP expired. Current: ${new Date()}, Expires: ${user.otpExpires}`);
+        console.log(
+          `[verifyOtp ${email}] OTP expired. Current: ${new Date()}, Expires: ${user.otpExpires}`,
+        );
         throw new BadRequestException('OTP expired! Please resend.');
       }
-      console.log(`[verifyOtp ${email}] Comparing entered OTP '${otp}' with hash '${user.otpCode}'`);
+      console.log(
+        `[verifyOtp ${email}] Comparing entered OTP '${otp}' with hash '${user.otpCode}'`,
+      );
       const isOtpValid = await bcrypt.compare(otp, user.otpCode);
       if (!isOtpValid) {
         console.log(`[verifyOtp ${email}] Password match failed.`);
@@ -383,18 +401,27 @@ export class UserService {
       let user: any = null;
       let userType: 'sTUDENT' | 'tEACHER' | 'aDMIN' | null = null;
 
-      const student = await this.prisma.sTUDENT.findUnique({ where: { email } });
+      const student = await this.prisma.sTUDENT.findUnique({
+        where: { email },
+      });
       if (student) {
         user = student;
         userType = 'sTUDENT';
       } else {
-        const teacher = await this.prisma.tEACHER.findUnique({ where: { email } });
+        const teacher = await this.prisma.tEACHER.findUnique({
+          where: { email },
+        });
         if (teacher) {
           user = teacher;
           userType = 'tEACHER';
         } else {
-          const admin = await this.prisma.aDMIN.findUnique({ where: { email } });
-          if (admin) { user = admin; userType = 'aDMIN'; }
+          const admin = await this.prisma.aDMIN.findUnique({
+            where: { email },
+          });
+          if (admin) {
+            user = admin;
+            userType = 'aDMIN';
+          }
         }
       }
 
@@ -424,7 +451,10 @@ export class UserService {
           `Your new OTP code is: ${otp}\n\nIt will expire in 5 minutes.`,
         );
       } catch (mailError) {
-        console.warn('[MailService] Failed to resend OTP email:', mailError?.message);
+        console.warn(
+          '[MailService] Failed to resend OTP email:',
+          mailError?.message,
+        );
       }
 
       return { message: 'OTP sent successfully!' };

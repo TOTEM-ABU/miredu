@@ -31,7 +31,8 @@ class RoleGuard implements CanActivate {
 
     // Rollarni solishtirishda harf kattaligiga (case) e'tibor bermaslik - Sifat uchun
     const hasRole = requiredRoles.some(
-      (role) => role.toString().toUpperCase() === userRole.toString().toUpperCase(),
+      (role) =>
+        role.toString().toUpperCase() === userRole.toString().toUpperCase(),
     );
 
     if (hasRole) {

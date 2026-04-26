@@ -110,7 +110,7 @@ export class GroupService {
       });
 
       if (!student) {
-        throw new NotFoundException("Talaba topilmadi!");
+        throw new NotFoundException('Talaba topilmadi!');
       }
 
       // Many-to-many bog'liqlikni gROUP modeli orqali qidirish
@@ -146,7 +146,7 @@ export class GroupService {
     } catch (error) {
       if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException(
-        "Guruhlarni yuklashda xatolik yuz berdi!",
+        'Guruhlarni yuklashda xatolik yuz berdi!',
       );
     }
   }
@@ -182,9 +182,9 @@ export class GroupService {
         where: { id: data.groupId },
         include: {
           students: {
-            where: { id: data.studentId }
-          }
-        }
+            where: { id: data.studentId },
+          },
+        },
       });
 
       if (!groupCheck) {
@@ -192,7 +192,9 @@ export class GroupService {
       }
 
       if (groupCheck.students && groupCheck.students.length > 0) {
-        throw new ConflictException("Ushbu o'quvchi allaqachon bu guruhga qo'shilgan!");
+        throw new ConflictException(
+          "Ushbu o'quvchi allaqachon bu guruhga qo'shilgan!",
+        );
       }
 
       // 2. O'quvchini guruhga qo'shish
