@@ -25,16 +25,53 @@ export default function StudentDashboard() {
     (async () => {
       try {
         const user = JSON.parse(localStorage.getItem("user") || "{}");
-        const [a, p, me] = await Promise.all([
-          api.get(`/api/attendance/student/${user.id}`),
-          api.get(`/api/payment/student/${user.id}`),
-          api.get("/api/User/get-me"),
+        const [a, p, me, g] = await Promise.all([
+          api.get(`/api/attendance/student/${user.id}`).catch(() => ({ data: { total: 0 } })),
+          api.get(`/api/payment/student/${user.id}`).catch(() => ({ data: { total: 0 } })),
+          api.get("/api/User/get-me").catch(() => ({ data: null })),
+          api.get("/api/group/my-groups").catch(() => ({ data: { data: [] } })),
         ]);
+        const paymentsList = p.data?.data || [];
+        const unpaidPayment = paymentsList.find(pay => pay.status !== 'PAID');
+        
+        const groupsList = g.data?.data || g.data || [];
+        const nextClass = groupsList.length > 0 ? groupsList[0] : null;
+
+        const dynamicReminders = [];
+        if (unpaidPayment) {
+           dynamicReminders.push({
+             title: "To'lov holati",
+             text: "Sizda to'lanmagan to'lov mavjud. O'z vaqtida to'lashni unutmang.",
+             color: "#ef4444",
+           });
+        } else {
+           dynamicReminders.push({
+             title: "Muvaffaqiyatli to'lov",
+             text: "Sizda hozircha qarzdorlik yo'q. Rahmat!",
+             color: "#34d399",
+           });
+        }
+
+        if (nextClass) {
+           dynamicReminders.push({
+             title: "Faol Guruhingiz",
+             text: `${nextClass.name} guruhi. Dars kunlari: ${nextClass.days || 'Belgilanmagan'}`,
+             color: "#6366f1",
+           });
+        }
+
+        dynamicReminders.push({
+           title: "Davomat",
+           text: `Jami ${a.data?.total ?? 0} ta darsda ishtirok etgansiz. Shunday davom eting!`,
+           color: "#f59e0b",
+        });
+
         setInfo({
           attendanceCount: a.data?.total ?? 0,
           paymentCount: p.data?.total ?? 0,
-          groups: me.data?.groups ?? [],
+          groups: groupsList,
           firstName: me.data?.firstName ?? user.firstName ?? "Foydalanuvchi",
+          reminders: dynamicReminders
         });
       } catch (e) {
         console.error(e);
@@ -68,7 +105,7 @@ export default function StudentDashboard() {
     },
     {
       label: "Natija",
-      value: "85%",
+      value: "100%",
       icon: TrendingUp,
       color: "#f59e0b",
       bg: "rgba(245,158,11,0.12)",
@@ -144,34 +181,6 @@ export default function StudentDashboard() {
           <p style={{ color: "#475569", fontWeight: 600 }}>
             Bugungi darslarni o'zlashtirishga tayyormisiz? 🚀
           </p>
-        </div>
-        <div style={{ display: "flex", gap: "0.75rem" }}>
-          {[
-            { icon: Star, label: "240 XP", color: "#f59e0b" },
-            { icon: Award, label: "Lider", color: "var(--primary)" },
-          ].map((b) => (
-            <div
-              key={b.label}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                padding: "0.6rem 1rem",
-                borderRadius: "0.85rem",
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.07)",
-              }}
-            >
-              <b.icon
-                size={16}
-                color={b.color}
-                style={b.label === "Lider" ? {} : { fill: b.color }}
-              />
-              <span style={{ fontWeight: 800, fontSize: "0.875rem" }}>
-                {b.label}
-              </span>
-            </div>
-          ))}
         </div>
       </div>
 
@@ -325,23 +334,7 @@ export default function StudentDashboard() {
           <div
             style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}
           >
-            {[
-              {
-                title: "To'lov muddati",
-                text: "3 kun vaqt qoldi. O'z vaqtida to'lang.",
-                color: "#ef4444",
-              },
-              {
-                title: "Yangi dars bugun",
-                text: "Soat 14:00 da API bo'yicha amaliy dars.",
-                color: "#34d399",
-              },
-              {
-                title: "Natijangiz yaxshi!",
-                text: "85% o'zlashtirish. Shunday davom eting!",
-                color: "#f59e0b",
-              },
-            ].map((r) => (
+            {(info.reminders || []).map((r) => (
               <div
                 key={r.title}
                 style={{

@@ -9,9 +9,8 @@ export function useTeachers() {
   const fetchTeachers = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await api.get("/api/User/teachers");
-      // Adjust if API returns an object or array
-      setTeachers(Array.isArray(data) ? data : data.data || []);
+      const { data } = await api.get("/api/User/GetAllTeachersWithFilters");
+      setTeachers(data.data || []);
     } catch (err) {
       console.error("Teachers fetch error:", err);
       toast.error("O'qituvchilarni yuklashda xatolik yuz berdi");

@@ -30,7 +30,6 @@ const STUDENT_MENU = [
   { name: "Guruhlarim", icon: BookOpen, path: "/my-groups" },
   { name: "Davomatlarim", icon: CalendarCheck, path: "/my-attendances" },
   { name: "To'lovlarim", icon: Wallet, path: "/my-payments" },
-  { name: "Statistika", icon: PieChart, path: "#" },
   { name: "Sozlamalar", icon: Settings, path: "/profile" },
 ];
 
@@ -158,8 +157,8 @@ export default function DashboardLayout({ children }) {
                     src={
                       user.avatar ||
                       "https://ui-avatars.com/api/?name=" +
-                        encodeURIComponent(user.firstName || user.name || "U") +
-                        "&background=6366f1&color=fff"
+                      encodeURIComponent(user.firstName || user.name || "U") +
+                      "&background=6366f1&color=fff"
                     }
                     alt="Avatar"
                   />

@@ -248,7 +248,7 @@ export default function GroupCard({
             flexShrink: 0,
           }}
         >
-          {group.teacher?.avatar ? (
+          {group.teacher?.avatar && (
             <img
               src={
                 group.teacher.avatar.startsWith("http")
@@ -258,17 +258,27 @@ export default function GroupCard({
               alt="Teacher"
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
               onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "https://ui-avatars.com/api/?name=T";
+                e.target.style.display = 'none';
+                if (e.target.nextSibling) {
+                  e.target.nextSibling.style.display = 'flex';
+                }
               }}
             />
-          ) : (
-            <span
-              style={{ color: "#818cf8", fontWeight: 800, fontSize: "0.9rem" }}
-            >
-              {group.teacher?.name?.[0] || "T"}
-            </span>
           )}
+          <span
+            style={{
+              display: group.teacher?.avatar ? 'none' : 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              height: '100%',
+              color: "#818cf8",
+              fontWeight: 900,
+              fontSize: "0.9rem"
+            }}
+          >
+            {group.teacher?.name ? group.teacher.name.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase() : "T"}
+          </span>
         </div>
         <div>
           <div

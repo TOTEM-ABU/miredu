@@ -194,21 +194,17 @@ export default function Teachers() {
                       flexShrink: 0,
                     }}
                   >
-                    <img
-                      src={
-                        teacher.avatar ||
-                        `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.name)}&background=6366f1&color=fff`
-                      }
-                      alt={teacher.name}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                      onError={(e) =>
-                        (e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.name || "T")}&background=6366f1&color=fff`)
-                      }
-                    />
+                    {teacher.avatar ? (
+                      <img
+                        src={teacher.avatar.startsWith('http') ? teacher.avatar : `http://localhost:3000${teacher.avatar}`}
+                        alt={teacher.name}
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                      />
+                    ) : null}
+                    <span style={{ display: teacher.avatar ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', color: '#818cf8', fontWeight: 900, fontSize: '1rem' }}>
+                      {teacher.name ? teacher.name.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'T'}
+                    </span>
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div

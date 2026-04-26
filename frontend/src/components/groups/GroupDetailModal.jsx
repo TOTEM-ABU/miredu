@@ -219,9 +219,20 @@ export default function GroupDetailModal({ group, onClose }) {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        overflow: "hidden"
                       }}
                     >
-                      <UserCircle size={20} color="#818cf8" />
+                      {group.teacher?.avatar ? (
+                        <img
+                          src={group.teacher.avatar.startsWith('http') ? group.teacher.avatar : `http://localhost:3000${group.teacher.avatar}`}
+                          alt="Teacher"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                        />
+                      ) : null}
+                      <div style={{ display: group.teacher?.avatar ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', color: '#818cf8', fontSize: '0.8rem', fontWeight: 900 }}>
+                        {group.teacher?.name ? group.teacher.name.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?'}
+                      </div>
                     </div>
                     <div style={{ flex: 1 }}>
                       <div

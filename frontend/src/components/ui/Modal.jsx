@@ -21,15 +21,13 @@ export default function Modal({ isOpen, onClose, title, children }) {
             }}
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.9, x: "-50%", y: "-40%" }}
+            animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+            exit={{ opacity: 0, scale: 0.9, x: "-50%", y: "-40%" }}
             style={{
               position: "fixed",
               top: "50%",
               left: "50%",
-              x: "-50%",
-              y: "-50%",
               width: "100%",
               maxWidth: "550px",
               zIndex: 1001,

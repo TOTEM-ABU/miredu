@@ -111,9 +111,9 @@ export default function MyGroupCard({ group, onSelect, variants }) {
                 alt="Teacher"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 onError={(e) => {
-                  e.target.style.display = "none";
+                  e.target.style.display = 'none';
                   if (e.target.nextSibling) {
-                    e.target.nextSibling.style.display = "flex";
+                    e.target.nextSibling.style.display = 'flex';
                   }
                 }}
               />
@@ -134,6 +134,7 @@ export default function MyGroupCard({ group, onSelect, variants }) {
               {group.teacher?.name
                 ? group.teacher.name
                     .split(" ")
+                    .filter(Boolean)
                     .map((n) => n[0])
                     .join("")
                     .substring(0, 2)

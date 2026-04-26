@@ -10,10 +10,12 @@ import {
   Loader2,
   AlertCircle,
   CalendarDays,
+  Download
 } from "lucide-react";
 import api from "../api/axios";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import * as XLSX from "xlsx";
 
 export default function Attendance() {
   const [groups, setGroups] = useState([]);
@@ -147,6 +149,33 @@ export default function Attendance() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const downloadExcel = () => {
+    if (!selectedGroup || students.length === 0) {
+      return toast.error("Eksport qilish uchun ma'lumot yo'q");
+    }
+
+    const statusMap = {
+      PRESENT: "Keldi",
+      ABSENT: "Yo'q",
+      LATE: "Kech qoldi",
+    };
+
+    const dataToExport = students.map((s, index) => ({
+      "T/r": index + 1,
+      "Ism Familiya": `${s.firstName} ${s.lastName}`,
+      "Holati": statusMap[attendanceData[s.id]] || "Belgilanmagan",
+      "Sana": date,
+      "Guruh": selectedGroup.name,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Davomat");
+    XLSX.writeFile(workbook, `${selectedGroup.name}_Davomat_${date}.xlsx`);
+
+    toast.success("Excel fayl yuklandi! 📊");
   };
 
   return (
@@ -480,6 +509,33 @@ export default function Attendance() {
               justifyContent: "flex-end",
             }}
           >
+            <button
+              onClick={downloadExcel}
+              className="btn-secondary"
+              style={{
+                width: "auto",
+                padding: "0.8rem 1.5rem",
+                marginRight: "auto",
+                background: "rgba(34,211,238,0.1)",
+                color: "#22d3ee",
+                border: "none",
+                borderRadius: "1rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                fontWeight: 800,
+                cursor: "pointer",
+                transition: "all 0.2s"
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = "rgba(34,211,238,0.2)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = "rgba(34,211,238,0.1)";
+              }}
+            >
+              <Download size={18} /> Excel'ga Yuklash
+            </button>
             <button
               onClick={onSave}
               disabled={saving || !isDateValid()}
